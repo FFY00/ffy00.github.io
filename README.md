@@ -8,7 +8,7 @@ This website is hosted by github and built on Markdown and Jekyll.
 
 ### Support or Contact
 
-Contact-me at email, IRC or Teamspeak. You won't find me often on IRC, try TeamSpeak instead.
+Contact-me at email, IRC or Teamspeak. You won't find me often on IRC, try TeamSpeak instead.  
 Email: [filipe.lains@gmail.com)](mailto:filipe.lains@gmail.com)  
 Email: [ffy00.gnc@gmail.com](mailto:ffy00.gnc@gmail.com)  
 Email: [@MyClaraOswin](https://twitter.com/MyClaraOswin)  
