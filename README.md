@@ -1,6 +1,6 @@
 ## FFY00 (Filipe Laíns)
 
-Software and Hardware hacker. Interested in radio systems and microcontrollers.
+Software and Hardware hacker. Developer. Interested in radio systems and microcontrollers.
 
 ### Website
 
@@ -12,6 +12,7 @@ Contact-me at email, IRC or Teamspeak. You won't find me often on IRC, try TeamS
 
 Email: [filipe.lains@gmail.com)](mailto:filipe.lains@gmail.com)  
 Email: [ffy00.gnc@gmail.com](mailto:ffy00.gnc@gmail.com)  
-Email: [@MissingClara](https://twitter.com/MissingClara)  
+Twitter: [@MissingClara](https://twitter.com/MissingClara)  
 IRC: FFY00 at [irc.0x00sec.org](irc:irc.0x00sec.org)  
+IRC: FFY00 at [chat.freenode.net](irc:chat.freenode.net)  
 TeamSpeak: FFY00 (Anubis) at [ts3.ffsv.ovh](ts3server://ts3.ffsv.ovh) (Usual Channel: Weed Lovers [By Madnezk] > 3,4,5-trimetoxifeniletilamina)
