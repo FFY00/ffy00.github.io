@@ -10,7 +10,7 @@ This website is hosted by github and built on Markdown and Jekyll.
 
 Contact-me at email, IRC or Teamspeak. You won't find me often on IRC, try TeamSpeak instead.
 
-Email: [filipe.lains@gmail.com)](mailto:filipe.lains@gmail.com)  
+Email: [filipe.lains@gmail.com](mailto:filipe.lains@gmail.com)  
 Email: [ffy00.gnc@gmail.com](mailto:ffy00.gnc@gmail.com)  
 Twitter: [@MissingClara](https://twitter.com/MissingClara)  
 IRC: FFY00 at [irc.0x00sec.org](irc:irc.0x00sec.org)  
