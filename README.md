@@ -14,5 +14,5 @@ Email: [filipe.lains@gmail.com](mailto:filipe.lains@gmail.com)
 Email: [ffy00.gnc@gmail.com](mailto:ffy00.gnc@gmail.com)  
 Twitter: [@MissingClara](https://twitter.com/MissingClara)  
 IRC: FFY00 at [irc.0x00sec.org](irc:irc.0x00sec.org)  
-IRC: FFY00 at [chat.freenode.net](irc:chat.freenode.net)  
+IRC: FFY00 at [chat.freenode.net](irc:chat.freenode.net) at #mescalina-dec
 TeamSpeak: FFY00 (Anubis) at [ts3.ffsv.ovh](ts3server://ts3.ffsv.ovh) (Usual Channel: Weed Lovers [By Madnezk] > 3,4,5-trimetoxifeniletilamina)
