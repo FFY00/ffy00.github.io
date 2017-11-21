@@ -6,6 +6,10 @@ Software and Hardware hacker. Developer. Interested in radio systems and microco
 
 This website is hosted by github and built on Markdown and Jekyll.
 
+### Kodi Repository
+
+Here's my Kodi repository: [https://ffy00.github.io/repository.anubis/](https://ffy00.github.io/repository.anubis/)
+
 ### Support or Contact
 
 Contact-me at email, IRC or Teamspeak. You won't find me often on IRC, try TeamSpeak instead.
