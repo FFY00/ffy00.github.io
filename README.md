@@ -16,6 +16,7 @@ You can contact-me by email, IRC or Teamspeak. You probably won't find me often 
 
 Email: [filipe.lains@gmail.com](mailto:filipe.lains@gmail.com)  
 Email: [ffy00.gnc@gmail.com](mailto:ffy00.gnc@gmail.com)  
+Email: [filipe@lains.me](mailto:filipe@lains.me)  
 Twitter: [@MissingClara](https://twitter.com/MissingClara)  
 IRC: FFY00 at [irc.0x00sec.org](irc:irc.0x00sec.org)  
 IRC: FFY00 at [chat.freenode.net](irc:chat.freenode.net) at #mescalina-dev  
