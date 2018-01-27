@@ -12,7 +12,7 @@ Here's my Kodi repository: [https://ffy00.github.io/repository.anubis/](https://
 
 ### Support or Contact
 
-Contact-me at email, IRC or Teamspeak. You won't find me often on IRC, try TeamSpeak instead.
+You can contact-me by email, IRC or Teamspeak. You probably won't find me often on IRC or TeamSpeak.
 
 Email: [filipe.lains@gmail.com](mailto:filipe.lains@gmail.com)  
 Email: [ffy00.gnc@gmail.com](mailto:ffy00.gnc@gmail.com)  
