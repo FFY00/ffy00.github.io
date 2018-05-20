@@ -1,6 +1,6 @@
 ## FFY00 (Filipe Laíns)
 
-Software and Hardware hacker. Developer. Interested in radio systems and microcontrollers.
+Student. Developer. Interested in radio systems and microcontrollers.
 
 ### Website
 
