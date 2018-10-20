@@ -1,6 +1,6 @@
 ## FFY00 (Filipe Laíns)
 
-I'm a student and developer. I program everything from low to high level but the one language I love is [D](https://dlang.org). I am also interested in radio systems, infosec and reverse engineering. Finally, I am a [Truster User](https://wiki.archlinux.org/index.php/Trusted_Users) at [Arch Linux](https://www.archlinux.org) and a member of the [Aurora Free Open Source Software Organization](https://aurorafoss.org).
+I'm a student and developer. I program everything from low to high level but the one language I love is [D](https://dlang.org). I am also interested in radio systems, infosec and reverse engineering. Finally, I am a [Trusted User](https://wiki.archlinux.org/index.php/Trusted_Users) at [Arch Linux](https://www.archlinux.org) and a member of the [Aurora Free Open Source Software Organization](https://aurorafoss.org).
 
 ##### PGP Key
   * [0x46F633CBB0EB4BF2](https://pgp.mit.edu/pks/lookup?op=vindex&search=0x46F633CBB0EB4BF2)
