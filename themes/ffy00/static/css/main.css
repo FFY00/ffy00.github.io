@@ -293,3 +293,15 @@ content: 'Markdown';
 background: royalblue;
 color: whitesmoke ;
 }
+
+table {
+  border-color: transparent;
+}
+th {
+  border-color: transparent;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+td {
+  border-color: transparent;
+  background: rgba(0, 0, 0, 0.1);
+}
