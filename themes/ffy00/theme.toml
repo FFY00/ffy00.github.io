@@ -1,0 +1,10 @@
+name = 'FFY00'
+license = 'MIT'
+licenselink = 'https://github.com/FFY00/ffy00.github.io/blob/master/LICENSE'
+description = 'Personal website/blog theme'
+homepage = 'https://github.com/FFY00'
+min_version = '0.41'
+
+[author]
+  name = 'Filipe Laíns'
+  homepage = 'https://github.com/FFY00'
