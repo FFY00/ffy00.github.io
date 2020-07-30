@@ -1,12 +1,16 @@
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	{{- $title := ( .Title ) -}}
 	{{- $siteTitle := ( .Site.Title ) -}}
+	{{- $title := $siteTitle -}}
+	{{- if .Title -}}
+	{{- $title := printf "%s - %s" ( .Title ) $siteTitle -}}
+	{{- end -}}
+
 	{{- if .IsHome -}}
 	<title>{{ $siteTitle }} | Home </title>
 	{{- else -}}
-	<title>{{ $title }} - {{ $siteTitle }}</title>
+	<title>{{ $title }}</title>
 	{{- end -}}
 
 	{{- if isset .Site.Params "favicon" -}}
@@ -30,7 +34,7 @@
 	{{ with .OutputFormats.Get "rss" -}}
 	{{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
 	{{ end -}}
-	
+
 	{{- template "_internal/opengraph.html" . -}}
 	{{- template "_internal/twitter_cards.html" . -}}
 	{{ if and (isset .Site.Params "social") (isset .Site.Params "feathericonscdn") (eq .Site.Params.featherIconsCDN true) -}}
