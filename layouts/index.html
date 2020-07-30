@@ -1,0 +1,22 @@
+{{ define "main" }}
+<style>
+img.align-right {
+    border-radius: 50%;
+}
+</style>
+<main>
+	<article>
+		{{ if .Title }}
+		<div class="title">
+			<h1 class="title">{{ .Title }}</h1>
+		</div>
+		{{ else }}
+		<br/>
+		{{ end }}
+
+		<section class="body">
+			{{ .Content }}
+		</section>
+	</article>
+</main>
+{{ end }}
