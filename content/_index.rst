@@ -26,6 +26,7 @@ There are several languages I am proficient at but the main are C and Python_.
 If you want to find out more about my work, and what I've been up to lately,
 please check my `Github profile`_.
 
+In case you want to support my work, I have a `Github sponsors`_ page.
 
 .. _Arch Linux: https://archlinux.org
 .. _libratbag: https://github.com/libratbag/libratbag
@@ -35,3 +36,4 @@ please check my `Github profile`_.
 .. _CPython: https://github.com/python/cpython
 .. _Python: https://python.org
 .. _Github profile: https://github.com/FFY00
+.. _Github sponsors: https://github.com/sponsors/FFY00
