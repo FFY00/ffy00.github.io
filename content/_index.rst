@@ -10,7 +10,7 @@ author = "Filipe Laíns"
 
 Hello, my name is Filipe Laíns and I am an open source developer from Portugal.
 
-I enjoy designing clean and correect solutions to software problems and I am
+I enjoy designing clean and correct solutions to software problems and I am
 interested in hardware design, analysis and reverse engineering, however I don't
 have any formal education in electrical engineering.
 
