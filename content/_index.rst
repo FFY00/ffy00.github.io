@@ -5,7 +5,7 @@ author = "Filipe Laíns"
 
 .. raw:: html
 
-    <img src="images/avatar.jpg" alt="avatar" style="width: 150px; border-radius: 50%; float: left; margin-right: 15px; margin-bottom: 15px" />
+    <img src="images/avatar.jpg" alt="avatar" style="width: 150px; border-radius: 50%; float: left; margin-right: 15px; margin-bottom: 10px" />
 
 
 Hello, my name is Filipe Laíns and I am an open source developer from Portugal.
