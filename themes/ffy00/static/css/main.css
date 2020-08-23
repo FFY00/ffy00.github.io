@@ -73,29 +73,29 @@ img {
   max-width: 100%;
 }
 
-figure {
+figure, .figure {
   box-sizing: border-box;
   display: inline-block;
   margin: 0;
   max-width: 100%;
 }
 
-figure img {
+figure img, .figure img {
   max-height: 500px;
 }
 
 @media screen and (min-width: 600px) {
-  figure {
+  figure, .figure {
     padding: 0 40px;
   }
 }
 
-figure h4 {
+figure h4, .figure .caption {
   font-size: 1rem;
   margin: 0;
   margin-bottom: 1em;
 }
-figure h4::before {
+figure h4::before, .figure .caption::before {
   content: '↳ ';
 }
 
