@@ -117,20 +117,11 @@ twice. The bug hasn't been fixed yet, so if your data isn't being dissected,
 even though you have the HID report descriptor available, this is probably the
 cause.
 
-Nested report IDs
------------------
-
-The current code doesn't deal with nested report IDs.
-This practice doesn't seem to be common, I haven't seen any device in the wild
-that makes use of report IDs in this way. Because of this, I opted to work
-adding annotations for widely used fields instead of working on support for
-this.
-
 Multiple usage pages per item
 -----------------------------
 
-Similarly to the nested report IDs, this is allowed by the HID specification but
-is not common in the wild. I opted to work on more relevant things.
+This is allowed by the HID specification but is not common in the wild. I opted
+to work on more relevant things.
 
 
 Conclusion
