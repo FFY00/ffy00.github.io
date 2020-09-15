@@ -136,7 +136,7 @@ annotations, but unfortunately that wasn't possible.
 I would like to give a huge thanks to Tomasz, he helped me out figuring the
 Wireshark internals and got me out of some rabbit holes when trying to
 interpret the HID specification. I would also like to thanks Benjamin Tissoires,
-who really helped me get started of the HID protocol and build up the base
+who really helped me get started with the HID protocol and build up the base
 knowledge essential to me being able to complete this project. Finally, I want
 to thank the rest of the Wireshark developers who helped me out in the IRC and
 reviewed my patches, as well as Google_ for making this experience possible.
