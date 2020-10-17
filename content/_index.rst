@@ -17,9 +17,11 @@ have any formal education in electrical engineering.
 Over the years, I've contributed to several open source projects and eventually
 gained maintainership of some of them. Some of the projects I maintain are
 `Arch Linux`_, a Linux distribution, where I am a packager, and libratbag_, a
-DBus daemon to configure input peripherals. I have also contributed to some
-other relevant projects like the `Linux kernel`_, Wireshark_, CPython_ (the
-reference implementation of the Python programming language) and meson_.
+DBus daemon to configure input peripherals. I have also authored a few projects,
+the most relevant being `pypa/build`_, a Python package builder, which has been
+adopted by the `Python Packaging Authority`_. Some relevant projects I have
+contributed to are the `Linux kernel`_, Wireshark_, CPython_ (the reference
+implementation of the Python programming language) and meson_.
 
 There are several languages I am proficient at but the main are C and Python_.
 
@@ -30,6 +32,8 @@ In case you want to support my work, I have a `Github sponsors`_ page.
 
 .. _Arch Linux: https://archlinux.org
 .. _libratbag: https://github.com/libratbag/libratbag
+.. _pypa/build: https://github.com/pypa/build
+.. _Python Packaging Authority: https://github.com/pypa
 .. _Linux kernel: https://kernel.org
 .. _Wireshark: https://wireshark.org
 .. _meson: https://mesonbuild.com
