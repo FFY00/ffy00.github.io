@@ -21,7 +21,7 @@ DBus daemon to configure input peripherals. I have also authored a few projects,
 the most relevant being `pypa/build`_, a Python package builder, which has been
 adopted by the `Python Packaging Authority`_. Some relevant projects I have
 contributed to are the `Linux kernel`_, Wireshark_, CPython_ (the reference
-implementation of the Python programming language) and meson_.
+implementation of the Python programming language) and `meson`_ build system.
 
 There are several languages I am proficient at but the main are C and Python_.
 
