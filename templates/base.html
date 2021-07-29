@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    % if 'title' in meta:
+    <title>Filipe Laíns - ${meta['title']}</title>
+    % else:
+    <title>Filipe Laíns</title>
+    % endif
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+
+      <nav class="navbar is-transparent pb-3" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="${url}">
+            <h1 class="title">Filipe Laíns</h1>
+          </a>
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="main-navbar">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div id="main-navbar" class="navbar-menu">
+          <div class="navbar-end">
+            <a class="navbar-item" href="${url}">Home</a>
+            <a class="navbar-item" href="blog">Blog</a>
+          </div>
+        </div>
+      </nav>
+
+      ${self.body()}
+    </div>
+  </section>
+  </body>
+</html>
