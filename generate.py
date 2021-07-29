@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import datetime
 import logging
 import pathlib
 import shutil
@@ -81,6 +82,8 @@ class Renderer:
         doc = cls._rst_to_docutils(file)
         args['body'] = cls._fix_html(doc['body'])
         args['meta'] = cls._extract_metadata(doc['whole'])
+        mtime = datetime.datetime.fromtimestamp(file.stat().st_mtime)
+        args['mtime'] = mtime.isoformat()
 
     @classmethod
     def metadata(cls, file: pathlib.Path) -> Dict[str, str]:
