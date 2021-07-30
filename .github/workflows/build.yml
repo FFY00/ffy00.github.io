@@ -1,0 +1,63 @@
+name: build
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v2
+
+      - name: Checkout build branch
+        uses: actions/checkout@v2
+        with:
+          ref: main
+          path: build
+
+      - name: Checkout master branch
+        uses: actions/checkout@v2
+        with:
+          ref: deploy
+          path: deploy
+
+      - name: Install dependencies
+        run: |
+          pip install -r "$GITHUB_WORKSPACE"/build/requirements.txt
+
+      - name: Generate website
+        run: |
+          cd "$GITHUB_WORKSPACE"/build
+          rm -rf "$GITHUB_WORKSPACE"/deploy/*
+          ./generate.py "$GITHUB_WORKSPACE"/deploy
+          # for .nojekyll and README
+          cp -r deploy-include/.nojekyll deploy-include/* "$GITHUB_WORKSPACE"/deploy
+          # for backwards compability -- avoid breaking links
+          mkdir -p "$GITHUB_WORKSPACE"/deploy/posts/01-gsoc-2020
+          cp "$GITHUB_WORKSPACE"/deploy/{blog,posts}/index.html
+          cp "$GITHUB_WORKSPACE"/deploy/{blog,posts}/01-gsoc-2020/index.html
+
+      - name: Setup git
+        run: |
+          git config --global user.email actions@github.com
+          git config --global user.name 'Github Actions'
+          git config --global core.editor true
+
+      - name: Commit packages
+        run: |
+          cd "$GITHUB_WORKSPACE"/deploy
+          git add -u
+          git add .nojekyll *
+          git commit --fixup HEAD || true
+          git rebase -i --autosquash --root
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          branch: deploy
+          directory: deploy
+          force: true
+
