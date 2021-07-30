@@ -78,7 +78,7 @@ class Renderer:
         xml = ET.fromstring('<body>' + html + '</body>')  # add some root node because ET needs one
         cls._fix_node(xml)
         new_html = ET.tostring(xml).decode()
-        new_html.removeprefix('<body>').removesuffix('</body>')  # remove the root node we added
+        new_html = new_html.removeprefix('<body>').removesuffix('</body>')  # remove the root node we added
         return new_html
 
     @staticmethod
