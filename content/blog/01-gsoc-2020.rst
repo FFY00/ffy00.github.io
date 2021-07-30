@@ -1,6 +1,11 @@
 .. meta::
     :title: GSoC 2020 - Wireshark USB HID Report Descriptor Parser
     :date: 2020-08-23T17:59:11+01:00
+    :summary: Final project write-up for my GSoC 2020 project, "Wireshark USB
+              HID Report Descriptor Parser", where I implemented a USB HID
+              report descriptor parser for Wireshark. The project resulted in
+              Wireshark gaining the ability to decod data from USB HID devices,
+              such as mice and keyboards.
 
 
 Introduction
