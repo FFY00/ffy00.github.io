@@ -64,10 +64,22 @@ class Renderer:
             if meta.get('name')
         }
 
-    @staticmethod
-    def _fix_html(html: str) -> str:
+    @classmethod
+    def _fix_node(cls, node: ET.Element) -> None:
+        for section in node.findall('section'):
+            section.attrib['class'] = 'content'
+            for h1 in section.findall('h1'):
+                h1.attrib['class'] = 'title'
+            cls._fix_node(section)
+
+    @classmethod
+    def _fix_html(cls, html: str) -> str:
         """Fix rst2html5 generated HTML to use our styling."""
-        return html
+        xml = ET.fromstring('<body>' + html + '</body>')  # add some root node because ET needs one
+        cls._fix_node(xml)
+        new_html = ET.tostring(xml).decode()
+        new_html.removeprefix('<body>').removesuffix('</body>')  # remove the root node we added
+        return new_html
 
     @staticmethod
     def _rst_to_docutils(file: pathlib.Path) -> Dict[str, str]:
