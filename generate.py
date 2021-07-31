@@ -54,7 +54,6 @@ class Renderer:
         self._templates = templates
         self._outdir = outdir
         self._content_root = content_root
-        self._static = self._outdir.joinpath('static')
         self._args = base_render_args.copy()
         self._args['meta'] = {}
 
@@ -148,7 +147,9 @@ class Renderer:
         if not outfile:
             raise ValueError('Neither `content_file` not `outfile` were supplied')
         outfile = self._outdir.joinpath(outfile)
-        static = pathlib.Path(os.path.relpath(self._static, outfile))
+        root = pathlib.Path(os.path.relpath(self._outdir, outfile.parent))
+        static = root / 'static'
+        args['root'] = root
         args['img'] = static / 'img'
         args['js'] = static / 'js'
 
