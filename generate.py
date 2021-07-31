@@ -2,6 +2,7 @@
 import argparse
 import datetime
 import logging
+import os.path
 import pathlib
 import shutil
 import sys
@@ -46,6 +47,7 @@ class Renderer:
         self._templates = templates
         self._outdir = outdir
         self._content_root = content_root
+        self._static = self._outdir.joinpath('static')
         self._args = base_render_args.copy()
         self._args['meta'] = {}
 
@@ -118,6 +120,9 @@ class Renderer:
         if not outfile:
             raise ValueError('Neither `content_file` not `outfile` were supplied')
         outfile = self._outdir.joinpath(outfile)
+        static = pathlib.Path(os.path.relpath(self._static, outfile))
+        args['img'] = static / 'img'
+        args['js'] = static / 'js'
 
         try:
             html = self._templates.get_template(template).render(**args)
