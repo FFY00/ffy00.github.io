@@ -1,6 +1,7 @@
 <%inherit file="base.html"/>
 
 <h1 class="title has-text-centered">${page.title}</h1>
+<h1 class="subtitle has-text-centered">${page.date.strftime('%H:%M %d/%m/%Y')}</h1>
 
 <div class="content">
   ${body}
