@@ -150,8 +150,6 @@ def main(cli_args: Sequence[str]) -> None:
     root = pathlib.Path(__file__).parent
     content = root / 'content'
     outdir = pathlib.Path(args.outdir)
-    static = outdir / 'static'
-    static.mkdir(parents=True, exist_ok=True)
 
     templates = mako.lookup.TemplateLookup(directories=[root / 'templates'])
     renderer = Renderer(templates, outdir, content, {
@@ -175,7 +173,7 @@ def main(cli_args: Sequence[str]) -> None:
         )
 
     # copy static files
-    shutil.copytree(root / 'images', static / 'img', dirs_exist_ok=True)
+    shutil.copytree(root / 'static', outdir / 'static', dirs_exist_ok=True)
 
 
 if __name__ == '__main__':
