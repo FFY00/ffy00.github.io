@@ -139,12 +139,18 @@ class Page(NamedTuple):
     id: str
     title: str
     summary: Optional[str]
+    date: datetime.datetime
 
 
 def list_pages(path: pathlib.Path) -> Sequence[Page]:
     files = list(path.iterdir())
     actual = [
-        Page(file.stem, meta['title'], meta.get('summary'))
+        Page(
+            file.stem,
+            meta['title'],
+            meta.get('summary'),
+            datetime.datetime.fromisoformat(meta['date']),
+        )
         for file, meta in zip(files, map(Renderer.metadata, files))
     ]
     return actual

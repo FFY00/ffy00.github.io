@@ -6,8 +6,13 @@
 <div class="columns">
   <div class="column is-full">
     <article class="notification has-background-success-light">
-      <div class="block">
-        <a class="title" href="${post.id}">${post.title}</a>
+      <div class="columns">
+        <div class="column">
+          <a class="title" href="${post.id}">${post.title}</a>
+        </div>
+        <div class="column is-narrow">
+          <h2 class="subtitle">${post.date.strftime('%H:%M %d/%m/%Y')}</h2>
+        </div>
       </div>
       <div class="block content">
         % if post.summary:
