@@ -73,6 +73,8 @@ class Renderer:
             for h1 in section.findall('h1'):
                 h1.attrib['class'] = 'title'
             cls._fix_node(section)
+        for dl in node.findall('dl'):
+            dl.attrib['class'] = 'box has-background-success-light'
 
     @classmethod
     def _fix_html(cls, html: str) -> str:
