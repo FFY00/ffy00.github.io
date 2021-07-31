@@ -39,8 +39,9 @@ And some of the most relevant projects I have contributed to:
 
 
 `Linux`_
-    Linux is a one the most popular operating system kernels. I have contributed
-    to several device drivers in the USB HID subsystem.
+    Linux is a one the most popular operating system kernels. I have
+    contributed, and actively review patches, to several device drivers in the
+    USB HID subsystem.
 
 Wireshark_
     Wireshark is the world’s foremost and widely-used network protocol analyzer.
