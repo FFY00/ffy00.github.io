@@ -35,6 +35,13 @@ def main_parser() -> argparse.ArgumentParser:
     return parser
 
 
+class Page(NamedTuple):
+    id: str
+    title: str
+    summary: Optional[str]
+    date: datetime.datetime
+
+
 class Renderer:
     def __init__(
         self,
@@ -96,14 +103,33 @@ class Renderer:
     def _render_args_from_rst(cls, file: pathlib.Path, args: Dict[str, Any]) -> None:
         """Convert rst to html and fill render arguments (body and metadata)."""
         doc = cls._rst_to_docutils(file)
+        meta = cls._extract_metadata(doc['whole'])
+        args['meta'] = meta
         args['body'] = cls._fix_html(doc['body'])
-        args['meta'] = cls._extract_metadata(doc['whole'])
         mtime = datetime.datetime.fromtimestamp(file.stat().st_mtime)
         args['mtime'] = mtime.isoformat()
+        try:
+            args['page'] = cls.page(file, meta)
+        except KeyError:
+            args['page'] = None
 
     @classmethod
     def metadata(cls, file: pathlib.Path) -> Dict[str, str]:
         return cls._extract_metadata(cls._rst_to_docutils(file)['whole'])
+
+    @classmethod
+    def page(
+        cls,
+        file: pathlib.Path,
+        metadata: Optional[Dict[str, str]] = None,
+    ) -> Page:
+        meta = metadata or cls.metadata(file)
+        return Page(
+            file.stem,
+            meta['title'],
+            meta.get('summary'),
+            datetime.datetime.fromisoformat(meta['date']),
+        )
 
     def render(
         self,
@@ -135,25 +161,10 @@ class Renderer:
             self._write(outfile, minify_html.minify(html))
 
 
-class Page(NamedTuple):
-    id: str
-    title: str
-    summary: Optional[str]
-    date: datetime.datetime
-
-
 def list_pages(path: pathlib.Path) -> Sequence[Page]:
-    files = list(path.iterdir())
-    actual = [
-        Page(
-            file.stem,
-            meta['title'],
-            meta.get('summary'),
-            datetime.datetime.fromisoformat(meta['date']),
-        )
-        for file, meta in zip(files, map(Renderer.metadata, files))
+    return [
+        Renderer.page(file) for file in path.iterdir()
     ]
-    return actual
 
 
 def main(cli_args: Sequence[str]) -> None:
