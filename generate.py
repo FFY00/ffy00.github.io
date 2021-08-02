@@ -5,6 +5,7 @@ import logging
 import os.path
 import pathlib
 import shutil
+import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
@@ -157,6 +158,7 @@ class Renderer:
         root = pathlib.Path(os.path.relpath(self._outdir, outfile.parent))
         static = root / 'static'
         args['root'] = root
+        args['css'] = static / 'css'
         args['img'] = static / 'img'
         args['js'] = static / 'js'
 
@@ -182,6 +184,9 @@ def main(cli_args: Sequence[str]) -> None:
     root = pathlib.Path(__file__).parent
     content = root / 'content'
     outdir = pathlib.Path(args.outdir)
+    out_css = outdir / 'static' / 'css'
+
+    out_css.mkdir(parents=True, exist_ok=True)
 
     templates = mako.lookup.TemplateLookup(directories=[root / 'templates'])
     renderer = Renderer(templates, outdir, content, not args.skip_minify, {
@@ -203,6 +208,12 @@ def main(cli_args: Sequence[str]) -> None:
             file,
             outfile=pathlib.Path('blog', file.stem, 'index.html'),
         )
+
+    # generate pygments theme
+    pygments_css = subprocess.check_output([
+        'pygmentize', '-S', 'default', '-f', 'html', '-a', 'pre'
+    ])
+    out_css.joinpath('pygments.css').write_bytes(pygments_css)
 
     # copy static files
     shutil.copytree(root / 'static', outdir / 'static', dirs_exist_ok=True)
