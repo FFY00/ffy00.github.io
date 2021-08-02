@@ -32,6 +32,11 @@ def main_parser() -> argparse.ArgumentParser:
         type=str,
         default='https://ffy00.github.io',
     )
+    parser.add_argument(
+        '--skip-minify',
+        '-m',
+        action='store_true',
+    )
     return parser
 
 
@@ -48,12 +53,14 @@ class Renderer:
         templates: mako.lookup.TemplateLookup,
         outdir: pathlib.Path,
         content_root: pathlib.Path,
+        minify: bool = True,
         base_render_args: Dict[str, Any] = {},
     ) -> None:
         self.__logger = logging.getLogger(str(self.__class__))
         self._templates = templates
         self._outdir = outdir
         self._content_root = content_root
+        self._minify = minify
         self._args = base_render_args.copy()
         self._args['meta'] = {}
 
@@ -159,7 +166,7 @@ class Renderer:
             html = mako.exceptions.html_error_template().render().decode()
             raise e
         finally:
-            self._write(outfile, minify_html.minify(html))
+            self._write(outfile, minify_html.minify(html) if self._minify else html)
 
 
 def list_pages(path: pathlib.Path) -> Sequence[Page]:
@@ -177,7 +184,7 @@ def main(cli_args: Sequence[str]) -> None:
     outdir = pathlib.Path(args.outdir)
 
     templates = mako.lookup.TemplateLookup(directories=[root / 'templates'])
-    renderer = Renderer(templates, outdir, content, {
+    renderer = Renderer(templates, outdir, content, not args.skip_minify, {
         'url': args.url,
     })
 
