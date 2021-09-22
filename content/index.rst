@@ -54,7 +54,7 @@ CPython_
 
 `Meson`_
     Meson is a very popular build system. I worked on support for the D
-    language.
+    language and improving introspection metadata.
 
 If you want to find out more about my work, and what I've been up to lately,
 please check my `Github profile`_.
