@@ -50,7 +50,7 @@ Wireshark_
 CPython_
     The reference implementation of the Python programming language. I am
     currently a member of the Python triage team and have contributed many
-    miscelaneous things.
+    miscelaneous fixes and improvements.
 
 `Meson`_
     Meson is a very popular build system. I worked on support for the D
