@@ -45,7 +45,7 @@ And some of the most relevant projects I have contributed to:
 
 Wireshark_
     Wireshark is the world’s foremost and widely-used network protocol analyzer.
-    I have implemented the USB HID report parser.
+    I have contributed the initial USB HID report parser code.
 
 CPython_
     The reference implementation of the Python programming language. I am
