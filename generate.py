@@ -82,13 +82,29 @@ class Renderer:
 
     @classmethod
     def _fix_node(cls, node: ET.Element) -> None:
+        # sections
         for section in node.findall('section'):
             section.attrib['class'] = 'content'
             for h1 in section.findall('h1'):
                 h1.attrib['class'] = 'title'
             cls._fix_node(section)
+        # lists
         for dl in node.findall('dl'):
             dl.attrib['class'] = 'box has-background-success-light'
+        # admonitions
+        for aside in node.findall('aside'):
+            if aside.attrib['class'] == 'admonition caution':
+                aside.tag = 'div'
+                aside.attrib['class'] = 'message is-warning'
+                header = ET.SubElement(aside, 'div', {'class': 'message-header'})
+                body = ET.SubElement(aside, 'div', {'class': 'message-body'})
+                for h1 in aside.findall('h1'):
+                    aside.remove(h1)
+                    header.append(h1)
+                    h1.tag = 'p'
+                for p in aside.findall('p'):
+                    aside.remove(p)
+                    body.append(p)
 
     @classmethod
     def _fix_html(cls, html: str) -> str:
