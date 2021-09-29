@@ -2,6 +2,7 @@
 import argparse
 import datetime
 import logging
+import operator
 import os.path
 import pathlib
 import shutil
@@ -188,9 +189,9 @@ class Renderer:
 
 
 def list_pages(path: pathlib.Path) -> Sequence[Page]:
-    return [
+    return sorted([
         Renderer.page(file) for file in path.iterdir()
-    ]
+    ], key=operator.attrgetter('id'))
 
 
 def main(cli_args: Sequence[str]) -> None:
