@@ -77,7 +77,7 @@ installing software without intending to customize the default environment of
 the Python interpreter, but at the end of the day, they are still customizing
 the Python environment.
 
-I think the following makes is clear that installing data to ``/usr/local``
+I think the following makes it clear that installing data to ``/usr/local``
 should not be used for programs in ``/usr``.
 
     It may be used for programs and data that are shareable amongst a group of
