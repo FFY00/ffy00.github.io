@@ -292,8 +292,8 @@ is shipping is effectively not the Python released by developers. This sounds
 very harsh, but honestly, I cannot blame them |--| this is has been a real issue
 for years and nothing has been done about it.
 
-I would blame the Debian Python maintainer though, the details we discussed here
-are very complex and there are many things to take into account, which are
+I do not blame the Debian Python maintainer though, the details we discussed
+here are very complex and there are many things to take into account, which are
 rarely obvious.
 I would say the issue is the lack of a Debian policy to address these
 situations, if Debian has policies that force the maintainers to make such
