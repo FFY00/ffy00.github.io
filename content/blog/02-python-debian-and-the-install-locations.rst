@@ -46,7 +46,7 @@ directory at ``/usr/lib/pythonX.Y/site-packages``. The site packages directory
 is a place for user-installed packages, it is a mechanism that that Python us to
 customize the default environment of the interpreter. That means packages
 installed there will be available in the interpreter, so you will be able to
-import them. This functionality is provided bt the ``site`` module, and can be
+import them. This functionality is provided by the ``site`` module, and can be
 disabled by passing the ``-S`` option to the interpreter.
 
 Install locations on Linux are governed by the `Filesystem Hierarchy Standard
