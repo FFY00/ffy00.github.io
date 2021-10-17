@@ -25,6 +25,8 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo apt-get update
+          sudo apt-get install sassc
           pip install -r "$GITHUB_WORKSPACE"/build/requirements.txt
 
       - name: Generate website

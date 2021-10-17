@@ -242,6 +242,13 @@ def main(cli_args: Sequence[str]) -> None:
     ])
     out_css.joinpath('pygments.css').write_bytes(pygments_css)
 
+    # compile scss
+    subprocess.check_call([
+        'sassc', '--style=compressed',
+        os.fspath(root / 'scss' / 'style.scss'),
+        os.fspath(out_css / 'style.css'),
+    ])
+
     # copy static files
     shutil.copytree(root / 'static', outdir / 'static', dirs_exist_ok=True)
 
