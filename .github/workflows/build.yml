@@ -17,6 +17,7 @@ jobs:
         with:
           ref: main
           path: build
+          submodules: true
 
       - name: Checkout master branch
         uses: actions/checkout@v2
