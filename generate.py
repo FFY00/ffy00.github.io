@@ -112,9 +112,10 @@ class Renderer:
                     aside.remove(h1)
                     header.append(h1)
                     h1.tag = 'p'
-                for p in aside.findall('p'):
-                    aside.remove(p)
-                    body.append(p)
+                for body_tag in ('p', 'ul'):
+                    for elem in aside.findall(body_tag):
+                        aside.remove(elem)
+                        body.append(elem)
 
     @classmethod
     def _fix_html(cls, html: str) -> str:
