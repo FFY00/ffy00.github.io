@@ -50,6 +50,11 @@ class Page(NamedTuple):
 
 
 class Renderer:
+    _ADMONITION_CLASSES = {
+        'caution': 'is-warning',
+        'note': 'is-info',
+    }
+
     def __init__(
         self,
         templates: mako.lookup.TemplateLookup,
@@ -94,9 +99,13 @@ class Renderer:
             dl.attrib['class'] = 'box has-background-success-light'
         # admonitions
         for aside in node.findall('aside'):
-            if aside.attrib['class'] == 'admonition caution':
+            classes = aside.attrib['class'].split(' ')
+            if 'admonition' in classes:
                 aside.tag = 'div'
-                aside.attrib['class'] = 'message is-warning'
+                aside.attrib['class'] = 'message'
+                for admoniton_class, new_class in cls._ADMONITION_CLASSES.items():
+                    if admoniton_class in classes:
+                        aside.attrib['class'] += f' {new_class}'
                 header = ET.SubElement(aside, 'div', {'class': 'message-header'})
                 body = ET.SubElement(aside, 'div', {'class': 'message-body'})
                 for h1 in aside.findall('h1'):
