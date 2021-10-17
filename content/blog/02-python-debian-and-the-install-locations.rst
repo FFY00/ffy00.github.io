@@ -355,7 +355,7 @@ Python distributions.
 .. _here: https://salsa.debian.org/cpython-team/python3/-/tree/master/debian/patches
 .. _distutils-install-layout.diff: https://salsa.debian.org/cpython-team/python3/-/blob/master/debian/patches/distutils-install-layout.diff
 .. _sysconfig-debian-schemes.diff: https://salsa.debian.org/cpython-team/python3/-/blob/master/debian/patches/sysconfig-debian-schemes.diff
-.. _the relevant bit of distutils-install-layout.diff: ttps://salsa.debian.org/cpython-team/python3/-/blob/python3.6/debian/patches/distutils-install-layout.diff#L140
+.. _the relevant bit of distutils-install-layout.diff: https://salsa.debian.org/cpython-team/python3/-/blob/python3.6/debian/patches/distutils-install-layout.diff#L140
 .. _pyenv: https://github.com/pyenv/pyenv
 .. _PSF: https://www.python.org/psf/
 .. _bpo-43976: https://bugs.python.org/issue43976
