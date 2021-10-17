@@ -14,15 +14,17 @@ initialization in specific.
 
 As some of you may know, the Python shipped by Debian is not exactly the same
 Python as the Python core developers intended. Debian makes several intrusive
-changes the Python distribution they ship. The last effort in documenting
-this that I am aware of was `this gist`_ by Christian Heimes (tiran).
+changes the Python distribution they ship. You can check the
+`Debian policy on Python packaging`_ for details.
 
 Distributors modifying software is not unheard of, in fact, it is fairly common.
 It is sometimes required to get software to work properly on the target system.
 However, generally, these modifications are kept fairly minimal. That is not
 the case of the Debian Python, which has significant behavior discrepancies from
-normal Python installations and ends up resulting in issues and lots of
-frustration per part of the users and developers that have to deal with it.
+normal Python installations, and ends up resulting in issues and lots of
+frustration per part of the users and developers that have to deal with it. The
+last effort in documenting this negative impact that I am aware of is
+`this gist`_ by Christian Heimes (tiran).
 
 
 Patched behavior and motivation
@@ -254,6 +256,27 @@ Meson). In which case, you will want to set the ``install_layout`` option to
        'scripts': install_cmd.install_scripts,
    }
 
+That is, of course, if you want to install to the system. Most of the times, you
+actually want to install to whichever install scheme is currently active. So we
+need to check if distutils is currently picking the ``deb_system`` layout.
+The easiest way I found of checking this is by looking at the value of
+``distutils.sysconfig.get_python_lib()``, see
+`the relevant bit of distutils-install-layout.diff`_.
+If it ends in ``dist-packages``, we are using the ``deb_system`` scheme,
+otherwise we are using the normal one. So, the code above becomes:
+
+.. code:: python
+
+    ...
+
+    if (
+        'deb_system' in distutils.command.install.INSTALL_SCHEMES
+        and distutils.sysconfig.get_python_lib().endswith('dist-packages')
+    ):  # Debian distutils
+        install_cmd.install_layout = 'deb'
+
+    ...
+
 And what about Python 3.12 and after? Well, I don't know. The correct answer
 ignoring Debian would be to simply use ``sysconfig.get_paths()``. Our issue is
 that we don't really know what Debian will do, and how exactly they will patch
@@ -311,9 +334,17 @@ the distribution, like the install locations, and a way to identify custom
 Python distributions.
 
 
+.. admonition:: Edited on 17-10-2021
+    :class: note
+
+    - Added link to Debian policy
+    - Added details about how to identify the currently active install scheme in Debian
+
+
 .. |--| unicode:: U+2013 .. en dash
 
 .. _this gist: https://gist.github.com/tiran/2dec9e03c6f901814f6d1e8dad09528e
+.. _Debian policy on Python packaging: https://www.debian.org/doc/packaging-manuals/python-policy/index.html#document-interpreter
 .. _Filesystem Hierarchy Standard (FHS): https://refspecs.linuxfoundation.org/FHS_3.0/fhs.html
 .. _/usr hierarchy: https://refspecs.linuxfoundation.org/FHS_3.0/fhs.html#theUsrHierarchy
 .. _/usr/local hierarchy: https://refspecs.linuxfoundation.org/FHS_3.0/fhs.html#usrlocalLocalHierarchy
@@ -324,6 +355,7 @@ Python distributions.
 .. _here: https://salsa.debian.org/cpython-team/python3/-/tree/master/debian/patches
 .. _distutils-install-layout.diff: https://salsa.debian.org/cpython-team/python3/-/blob/master/debian/patches/distutils-install-layout.diff
 .. _sysconfig-debian-schemes.diff: https://salsa.debian.org/cpython-team/python3/-/blob/master/debian/patches/sysconfig-debian-schemes.diff
+.. _the relevant bit of distutils-install-layout.diff: ttps://salsa.debian.org/cpython-team/python3/-/blob/python3.6/debian/patches/distutils-install-layout.diff#L140
 .. _pyenv: https://github.com/pyenv/pyenv
 .. _PSF: https://www.python.org/psf/
 .. _bpo-43976: https://bugs.python.org/issue43976
