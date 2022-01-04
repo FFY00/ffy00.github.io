@@ -325,9 +325,9 @@ started with the project upstream asking for guidance and recommendations on how
 to achieve the desired behavior, to minimize the negative impact the downstream
 patching will have.
 
-That said, I think the Python upstream strive to make the situation better for
-downstream packagers. We have seen that vendors have certain needs that are not
-being addressed, so we should try to fix that. I took a stab at solving this
+That said, I think the Python upstream should strive to make the situation better
+for downstream packagers. We have seen that vendors have certain needs that are
+not being addressed, so we should try to fix that. I took a stab at solving this
 with bpo-43976_ and bpo-44982_, but progress has been slow. The idea is that the
 Python upstream should provide a way for vendors to customize certain aspects of
 the distribution, like the install locations, and a way to identify custom
