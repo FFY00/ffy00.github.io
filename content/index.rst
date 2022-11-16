@@ -23,12 +23,22 @@ most relevant projects I maintain:
     A popular Linux distribution, where I am a packager. You can find a list of
     the package I maintain on the `package search page`_.
 
+CPython_
+    The reference implementation of the Python programming language. I maintain
+    the `sysconfig`_ and `importlib.resources`_ modules, and help out on the
+    `importlib`_ module and miscellaneous stuff when I can.
+
 libratbag_
     A DBus daemon to configure input peripherals.
 
 `pypa/build`_
     A Python package builder which implements `PEP 517`_. The project is
     currently under the umbrella of the `Python Packaging Authority`_.
+
+`meson-python`_
+    A popular Python build backend that enables users to use `Meson`_ to build
+    Python packages. The project is currently under the umbrella of the `Meson`_
+    project.
 
 `openinput`_
     A project that provides open source firmware, open hardware, and a open
@@ -47,14 +57,10 @@ Wireshark_
     Wireshark is the world’s foremost and widely-used network protocol analyzer.
     I have contributed the initial USB HID report parser code.
 
-CPython_
-    The reference implementation of the Python programming language. I am
-    currently a member of the Python triage team and have contributed many
-    miscelaneous fixes and improvements.
-
 `Meson`_
     Meson is a very popular build system. I worked on support for the D
     language and improving introspection metadata.
+
 
 If you want to find out more about my work, and what I've been up to lately,
 please check my `Github profile`_.
@@ -73,5 +79,9 @@ In case you want to support my work, I have a `Github sponsors`_ page.
 .. _meson: https://mesonbuild.com
 .. _CPython: https://github.com/python/cpython
 .. _Python: https://python.org
+.. _sysconfig: https://docs.python.org/3/library/sysconfig.html
+.. _importlib.resources: https://docs.python.org/3/library/importlib.resources.html
+.. _importlib: https://docs.python.org/3/library/importlib.html
+.. _meson-python: https://github.com/mesonbuild/meson-python
 .. _Github profile: https://github.com/FFY00
 .. _Github sponsors: https://github.com/sponsors/FFY00
