@@ -1,6 +1,6 @@
 .. raw:: html
 
-    <img src="static/img/avatar.jpg" alt="avatar" style="width: 150px; border-radius: 50%; float: left; margin-right: 15px; margin-bottom: 10px" />
+    <img src="static/img/avatar.png" alt="avatar" style="width: 150px; border-radius: 50%; float: left; margin-right: 15px; margin-bottom: 10px" />
 
 
 Hello, my name is Filipe Laíns and I am an open source developer from Portugal.
