@@ -35,6 +35,9 @@ libratbag_
     A Python package builder which implements `PEP 517`_. The project is
     currently under the umbrella of the `Python Packaging Authority`_.
 
+`pyproject-metadata`_
+    A Python package that implements the parsing of `PEP 621`_ metadata.
+
 `openinput`_
     A project that provides open source firmware, open hardware, and a open
     protocol, for input devices (eg. mice, keyboards, etc.).
@@ -74,6 +77,8 @@ In case you want to support my work, I have a `Github sponsors`_ page.
 .. _pypa/build: https://github.com/pypa/build
 .. _PEP 517: https://www.python.org/dev/peps/pep-0517/
 .. _Python Packaging Authority: https://github.com/pypa
+.. _pyproject-metadata: https://github.com/FFY00/python-pyproject-metadata
+.. _PEP 621: https://www.python.org/dev/peps/pep-0621/
 .. _openinput: https://github.com/openinput-fw/openinput
 .. _Linux: https://kernel.org
 .. _Wireshark: https://wireshark.org
