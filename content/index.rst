@@ -35,11 +35,6 @@ libratbag_
     A Python package builder which implements `PEP 517`_. The project is
     currently under the umbrella of the `Python Packaging Authority`_.
 
-`meson-python`_
-    A popular Python build backend that enables users to use `Meson`_ to build
-    Python packages. The project is currently under the umbrella of the `Meson`_
-    project.
-
 `openinput`_
     A project that provides open source firmware, open hardware, and a open
     protocol, for input devices (eg. mice, keyboards, etc.).
@@ -60,6 +55,12 @@ Wireshark_
 `Meson`_
     Meson is a very popular build system. I worked on support for the D
     language and improving introspection metadata.
+
+`meson-python`_
+    A popular Python build backend that enables users to use `Meson`_ to build
+    Python packages. The project is currently under the umbrella of the `Meson`_
+    project. I was the main author of the project, but have since stepped down as
+    a maintainer.
 
 
 If you want to find out more about my work, and what I've been up to lately,
