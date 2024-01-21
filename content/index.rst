@@ -19,14 +19,14 @@ You can find the full list on my `Github Profile`_, but here are some of the
 most relevant projects I maintain:
 
 
-`Arch Linux`_
-    A popular Linux distribution, where I am a packager. You can find a list of
-    the package I maintain on the `package search page`_.
-
 CPython_
     The reference implementation of the Python programming language. I maintain
     the `sysconfig`_ and `importlib.resources`_ modules, and help out on the
     `importlib`_ module and miscellaneous stuff when I can.
+
+`Arch Linux`_
+    A popular Linux distribution, where I am a packager. You can find a list of
+    the package I maintain on the `package search page`_.
 
 libratbag_
     A DBus daemon to configure input peripherals.
