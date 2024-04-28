@@ -27,6 +27,11 @@ def main_parser() -> argparse.ArgumentParser:
         type=str,
         help='post title',
     )
+    parser.add_argument(
+        '--draft',
+        action='store_true',
+        help='create post as draft',
+    )
     return parser
 
 
@@ -40,15 +45,20 @@ def main(cli_args: Sequence[str]) -> None:
     args = parser.parse_args(cli_args)
 
     root = pathlib.Path(__file__).parent
-    blog = root / 'content' / 'blog'
+    blog = root / 'content' / 'blog-draft' if args.draft else 'blog'
+    blog.mkdir(parents=True, exist_ok=True)
+
+    name = args.id
+    if not args.draft:
+        name = f'{find_next_id_number(blog)}-{name}'
+    article_path = blog / f'{name}.rst'
 
     templates = mako.lookup.TemplateLookup(directories=[root / 'templates'])
-
-    rst = templates.get_template('new-blog-post.rst').render(
+    article_data = templates.get_template('new-blog-post.rst').render(
         title=args.title,
         date=datetime.datetime.now().isoformat(),
     )
-    blog.joinpath(f'{find_next_id_number(blog)}-{args.id}.rst').write_text(rst)
+    article_path.write_text(article_data)
 
 
 if __name__ == '__main__':
