@@ -11,7 +11,7 @@
 Introduction
 ============
 
-Today I am writting about my project for `Google Summer of Code`_ 2020,
+Today I am writing about my project for `Google Summer of Code`_ 2020,
 improving the Wireshark USB HID dissector. This summer, with the help of
 `Tomasz Moń`_, I am taking upon the task of writing a HID report descriptor
 parser and adding annotations for HID data in Wireshark_.
@@ -48,7 +48,7 @@ not get it right at first, but I got it close enough that it was easy to fix.
 
 After having the parser implemented, I started working on the data annotations.
 Along the way, I naturally tweaked the parser to better adapt to our use case.
-The step of writting the annotations also presented its issues.
+The step of writing the annotations also presented its issues.
 Wireshark operates data at a byte level, but HID operates at a bit level. There
 were already some internal ways to try to get around this issue, but they needed
 to be expanded to properly cater to the needs of HID. Wireshark has encontered
@@ -82,7 +82,7 @@ Overcoming these issues, I think we got some nice end results.
 
 
 As you can see, annotations for some fields are still missing. I will keep
-adding more fields as time allows. What is important here is that I acomplished
+adding more fields as time allows. What is important here is that I accomplished
 my goal related to the report descriptor parser design, adding support for more
 fields is easy and I hope this will enable other people to contribute.
 
@@ -107,7 +107,7 @@ for the USB configuration descriptors when you start recording, but
 unfortunately, it doesn't do the same for the HID report descriptors.
 
 So, if you want to look at HID data dissections, you need to start recording
-before pluging in the device, this way you will also capture the packets where
+before plugging in the device, this way you will also capture the packets where
 the operating system asks the device for the HID descriptors.
 
 USB dissector bug
@@ -156,7 +156,7 @@ Here are the more significant patches.
 - Save the HID report descriptors: c3e2f3cf9c556cc849b50cdba7b2a9af05effe54_
 - Annotate HID data: f1bc8ad34b55cba7234536483d42c551fc3b2f17_
 - Add HID report descriptor parser: 2d49ab3d25435be3d15c9a59189f4017db5c5ddb_
-- Save input and output usages separatedly: bef04c21b4664f4318705ec3ccb48919407f0484_
+- Save input and output usages separately: bef04c21b4664f4318705ec3ccb48919407f0484_
 
 - Dissect vendor data: b9588c213c6b70cc1e0045917c3f0aeb02c10408_
 - Minimal dissection of unknown (unimplemented) usages: a5ed52b66680b12af1bb50f015972d3554619240_
