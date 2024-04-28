@@ -20,17 +20,17 @@ def main_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         'id',
         type=str,
-        help='post id',
+        help='article id',
     )
     parser.add_argument(
         'title',
         type=str,
-        help='post title',
+        help='article title',
     )
     parser.add_argument(
         '--draft',
         action='store_true',
-        help='create post as draft',
+        help='create article as draft',
     )
     return parser
 
@@ -56,7 +56,7 @@ def main(cli_args: Sequence[str]) -> None:
         raise ScriptError(f'blog article path already exists: {article_path}')
 
     templates = mako.lookup.TemplateLookup(directories=[root / 'templates'])
-    article_data = templates.get_template('new-blog-post.rst').render(
+    article_data = templates.get_template('new-blog-article.rst').render(
         title=args.title,
         date=datetime.datetime.now().isoformat(),
     )
