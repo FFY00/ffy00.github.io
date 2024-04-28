@@ -9,6 +9,12 @@ from typing import Sequence
 import mako.lookup
 
 
+class ScriptError(SystemExit):
+    def __init__(self, msg: str, code: int = 1) -> None:
+        super().__init__(code=code)
+        self.msg = msg
+
+
 def main_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -46,4 +52,8 @@ def main(cli_args: Sequence[str]) -> None:
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    try:
+        main(sys.argv[1:])
+    except ScriptError as e:
+        print(e.msg, file=sys.stderr)
+        raise
