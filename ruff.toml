@@ -1,0 +1,13 @@
+line-length = 127
+
+[format]
+quote-style = 'single'
+
+[lint]
+extend-select = [
+    'I',  # isort
+]
+
+[lint.isort]
+lines-between-types = 1
+lines-after-imports = 2

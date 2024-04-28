@@ -199,9 +199,7 @@ class Renderer:
 
 
 def list_pages(path: pathlib.Path) -> Sequence[Page]:
-    return sorted([
-        Renderer.page(file) for file in path.iterdir()
-    ], key=operator.attrgetter('id'))
+    return sorted([Renderer.page(file) for file in path.iterdir()], key=operator.attrgetter('id'))
 
 
 def main(cli_args: Sequence[str]) -> None:
@@ -216,9 +214,13 @@ def main(cli_args: Sequence[str]) -> None:
     out_css.mkdir(parents=True, exist_ok=True)
 
     templates = mako.lookup.TemplateLookup(directories=[root / 'templates'])
-    renderer = Renderer(templates, outdir, content, not args.skip_minify, {
-        'url': args.url,
-    })
+    renderer = Renderer(
+        templates,
+        outdir,
+        content,
+        not args.skip_minify,
+        {'url': args.url},
+    )
 
     # render
     renderer.render('index.html', content / 'index.rst')
@@ -237,17 +239,18 @@ def main(cli_args: Sequence[str]) -> None:
         )
 
     # generate pygments theme
-    pygments_css = subprocess.check_output([
-        'pygmentize', '-S', 'default', '-f', 'html', '-a', 'pre'
-    ])
+    pygments_css = subprocess.check_output(['pygmentize', '-S', 'default', '-f', 'html', '-a', 'pre'])
     out_css.joinpath('pygments.css').write_bytes(pygments_css)
 
     # compile scss
-    subprocess.check_call([
-        'sassc', '--style=compressed',
-        os.fspath(root / 'scss' / 'style.scss'),
-        os.fspath(out_css / 'style.css'),
-    ])
+    subprocess.check_call(
+        [
+            'sassc',
+            '--style=compressed',
+            os.fspath(root / 'scss' / 'style.scss'),
+            os.fspath(out_css / 'style.css'),
+        ]
+    )
 
     # copy static files
     shutil.copytree(root / 'static', outdir / 'static', dirs_exist_ok=True)
