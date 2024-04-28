@@ -64,4 +64,3 @@ jobs:
           branch: deploy
           directory: deploy
           force: true
-

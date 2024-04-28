@@ -89,7 +89,7 @@ But alas, Debian thinks pip should place packages in ``/usr/local``, reserving
 ``/usr`` for the Python packages installed by Debian. This would mean
 ``/usr/lib/pythonX.Y/site-packages`` for Debian packages, and
 ``/usr/local/lib/pythonX.Y/site-packages`` for packages installed by pip. The
-more attentive of you might have spotted the first problem, using 
+more attentive of you might have spotted the first problem, using
 ``/usr/local/lib/pythonX.Y/site-packages`` conflicts with local Python
 installations, which use the ``/usr/local`` prefix! Both ``/usr/bin/python`` and
 ``/usr/local/bin/python`` would be loading packages from
@@ -101,7 +101,7 @@ packages, making it ``/usr/lib/pythonX/dist-packages``. This is done to avoid
 rebuilding all packages that contain Python modules when Python is updated.
 
 So summarizing, Debian removes ``/usr/lib/pythonX.Y/site-packages`` from the
-module import path search list (sys.path_), adds 
+module import path search list (sys.path_), adds
 ``/usr/lib/pythonX/dist-packages`` and
 ``/usr/local/lib/pythonX.Y/dist-packages``, and changes the default install
 location to ``/usr/local/lib/pythonX.Y/dist-packages`` (well, only in one place,
@@ -152,7 +152,7 @@ The issue
 
 As we saw above, Debian overwrites the site packages in paths in the ``site``
 module, however, they do not patch ``sysconfig`` to represent those
-modifications, only ``distutils``. This presents a really big problem, the 
+modifications, only ``distutils``. This presents a really big problem, the
 install locations returned by ``sysconfig`` are incorrect.
 
 .. code:: python
