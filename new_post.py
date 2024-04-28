@@ -52,6 +52,8 @@ def main(cli_args: Sequence[str]) -> None:
     if not args.draft:
         name = f'{find_next_id_number(blog)}-{name}'
     article_path = blog / f'{name}.rst'
+    if article_path.exists():
+        raise ScriptError(f'blog article path already exists: {article_path}')
 
     templates = mako.lookup.TemplateLookup(directories=[root / 'templates'])
     article_data = templates.get_template('new-blog-post.rst').render(
