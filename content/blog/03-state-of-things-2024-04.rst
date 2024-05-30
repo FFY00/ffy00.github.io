@@ -10,7 +10,7 @@ Introduction
 
 Over the past couple years, I have started to become more and more inactive in
 the open source projects I am involved. This has been in most part due to my
-metal health, and is something I am still trying navigate, so the future is
+mental health, and is something I am still trying navigate, so the future is
 still up in the air.
 
 I wanted to write this post to help clarify where I am with regards to my
@@ -45,7 +45,7 @@ lot of difficulty to control my focus. Briefly, my focus can drift very easily,
 making it difficult to keep focus on one thing unless it very stimulating to me.
 This likely played a role on me getting to the position I am now, since it caused
 to shift my focus into things I would have perhaps just ignored, but at the
-price of mading me dysfunctional in a lot of scenarios.
+price of making me dysfunctional in a lot of scenarios.
 
 Anxiety is something I also struggle with, but it is generally easier to manage.
 Since it is usually triggered by specific things, by making an effort to avoid
