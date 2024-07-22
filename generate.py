@@ -71,10 +71,10 @@ class Renderer:
         self._args = base_render_args.copy()
         self._args['meta'] = {}
 
-    def _write(self, file: pathlib.Path, html: str) -> None:
+    def _write_html(self, file: pathlib.Path, html: str) -> None:
         file.parent.mkdir(parents=True, exist_ok=True)
         self.__logger.info(f'writing to {file}...')
-        file.write_text(html)
+        file.write_text(minify_html.minify(html) if self._minify else html)
 
     @staticmethod
     def _extract_metadata(html: str) -> Dict[str, str]:
@@ -195,7 +195,7 @@ class Renderer:
             html = mako.exceptions.html_error_template().render().decode()
             raise e
         finally:
-            self._write(outfile, minify_html.minify(html) if self._minify else html)
+            self._write_html(outfile, html)
 
 
 def list_pages(path: pathlib.Path) -> Sequence[Page]:
