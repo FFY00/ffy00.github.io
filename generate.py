@@ -8,6 +8,7 @@ import pathlib
 import shutil
 import subprocess
 import sys
+import textwrap
 import xml.etree.ElementTree as ET
 
 from typing import Any, Dict, NamedTuple, Optional, Sequence
@@ -165,6 +166,26 @@ class Renderer:
             datetime.datetime.fromisoformat(meta['date']),
         )
 
+    def render_redirect_page(self, origin: pathlib.Path, target: pathlib.Path) -> None:
+        assert origin.exists()
+        new_url = origin.relative_to(target.parent, walk_up=True).as_posix()
+        html = textwrap.dedent(f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Redirecting...</title>
+                <link rel="canonical" href="{new_url}" />
+                <meta charset="utf-8" />
+                <meta http-equiv="refresh" content="0; url={new_url}" />
+            </head>
+            <body>
+                <p>Redirecting...</p>
+            </body>
+            </html>
+        """)
+        target.parent.mkdir(exist_ok=True, parents=True)
+        self._write_html(target, html)
+
     def render(
         self,
         template: str,
@@ -200,6 +221,17 @@ class Renderer:
 
 def list_pages(path: pathlib.Path) -> Sequence[Page]:
     return sorted([Renderer.page(file) for file in path.iterdir()], key=operator.attrgetter('id'))
+
+
+def backwards_compatibility_fixes(renderer: Renderer, outdir: pathlib.Path) -> None:
+    renderer.render_redirect_page(
+        outdir / 'blog' / 'index.html',
+        outdir / 'posts' / 'index.html',
+    )
+    renderer.render_redirect_page(
+        outdir / 'blog' / '01-gsoc-2020' / 'index.html',
+        outdir / 'posts' / '01-gsoc-2020' / 'index.html',
+    )
 
 
 def main(cli_args: Sequence[str]) -> None:
@@ -254,6 +286,8 @@ def main(cli_args: Sequence[str]) -> None:
 
     # copy static files
     shutil.copytree(root / 'static', outdir / 'static', dirs_exist_ok=True)
+
+    backwards_compatibility_fixes(renderer, outdir)
 
 
 if __name__ == '__main__':

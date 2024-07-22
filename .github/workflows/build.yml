@@ -38,10 +38,6 @@ jobs:
           ./generate.py "$GITHUB_WORKSPACE"/deploy
           # for .nojekyll and README
           cp -r deploy-include/.nojekyll deploy-include/* "$GITHUB_WORKSPACE"/deploy
-          # for backwards compatibility -- avoid breaking links
-          mkdir -p "$GITHUB_WORKSPACE"/deploy/posts/01-gsoc-2020
-          cp "$GITHUB_WORKSPACE"/deploy/{blog,posts}/index.html
-          cp "$GITHUB_WORKSPACE"/deploy/{blog,posts}/01-gsoc-2020/index.html
 
       - name: Setup git
         run: |
