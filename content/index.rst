@@ -5,24 +5,25 @@
 
 Hello, my name is Filipe Laíns and I am an open source developer from Portugal.
 
-I enjoy designing clean and correct solutions to software problems and I am
-interested in hardware design, analysis and reverse engineering, however I don't
-have any formal education in electrical engineering.
+I enjoy designing clean and correct solutions to software problems, and I am
+interested in electro-metrology, semiconductor manufacturing, and nuclear
+physics, however I don't have any formal education in electrical engineering or
+the physics fields.
 
-There are several languages I am proficient at but the main are C and Python_.
+There are several programming languages I am proficient at, but the main are C
+and Python_.
 
 Over the years, I've contributed to several open source projects and eventually
 gained maintainership of some of them. In addition to this, I have also authored
-a few popular projects.
+a few popular projects, and contributed to a lot of other projects.
 
 You can find the full list on my `Github Profile`_, but here are some of the
 most relevant projects I maintain:
 
 
-CPython_
-    The reference implementation of the Python programming language. I maintain
-    the `sysconfig`_ and `importlib.resources`_ modules, and help out on the
-    `importlib`_ module and miscellaneous stuff when I can.
+Python_
+    The Python programming language. I maintain the `sysconfig`_ and
+    `importlib`_ modules, and help out on miscellaneous stuff when I can.
 
 `Arch Linux`_
     A popular Linux distribution, where I am a packager. You can find a list of
@@ -83,10 +84,8 @@ In case you want to support my work, I have a `Github sponsors`_ page.
 .. _Linux: https://kernel.org
 .. _Wireshark: https://wireshark.org
 .. _meson: https://mesonbuild.com
-.. _CPython: https://github.com/python/cpython
 .. _Python: https://python.org
 .. _sysconfig: https://docs.python.org/3/library/sysconfig.html
-.. _importlib.resources: https://docs.python.org/3/library/importlib.resources.html
 .. _importlib: https://docs.python.org/3/library/importlib.html
 .. _meson-python: https://github.com/mesonbuild/meson-python
 .. _Github profile: https://github.com/FFY00
