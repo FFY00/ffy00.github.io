@@ -22,15 +22,17 @@ most relevant projects I maintain:
 
 
 Python_
-    The Python programming language. I maintain the `sysconfig`_ and
-    `importlib`_ modules, and help out on miscellaneous stuff when I can.
+    Python is one of the most popular programming languages. I maintain the
+    `sysconfig`_ and `importlib`_ modules, and help out on miscellaneous stuff
+    when I can.
 
 `Arch Linux`_
     A popular Linux distribution, where I am a packager. You can find a list of
-    the package I maintain on the `package search page`_.
+    the packages I maintain on the `package search page`_.
 
 libratbag_
-    A DBus daemon to configure input peripherals.
+    A DBus daemon to configure input peripherals (eg. mice, keyboards, etc.) on
+    Linux.
 
 `pypa/build`_
     A Python package builder which implements `PEP 517`_. The project is
