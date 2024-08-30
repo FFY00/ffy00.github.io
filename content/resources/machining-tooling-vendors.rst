@@ -92,7 +92,7 @@ endmills and other cutting tools. So far, I am pretty happy with the quality.
           Medium-Low
 
 Decent quality, and reasonable prices. I bought a bunch of ER20 chucks and a
-ER20 collect set. The chucks and collets seem to be of decent quality.
+ER20 collet set. The chucks and collets seem to be of decent quality.
 
 
 `Vallder <https://vallder.com/>`_
