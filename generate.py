@@ -1,4 +1,16 @@
 #!/usr/bin/env python3
+
+# /// script
+# dependencies = [
+#   'docutils',
+#   'rich',
+#   'rich_argparse',
+#   'mako',
+#   'minify_html',
+#   'rst2html5',
+# ]
+# ///
+
 import argparse
 import datetime
 import logging
