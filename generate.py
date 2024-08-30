@@ -25,10 +25,12 @@ import textwrap
 import types
 import xml.etree.ElementTree as ET
 
-from collections.abc import Iterable
-from typing import Any, NamedTuple, Sequence
+from collections.abc import Collection, Iterable
+from typing import Any, NamedTuple, Self, Sequence
 
 import docutils.core
+import docutils.frontend
+import docutils.parsers.rst
 import mako.exceptions
 import mako.lookup
 import minify_html
@@ -135,11 +137,39 @@ def main_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def docutils_parse_rst(file: pathlib.Path, extra_components: Collection[docutils.Component] = ()) -> docutils.nodes.document:
+    parser = docutils.parsers.rst.Parser()
+    settings = docutils.frontend.get_default_settings(parser, *extra_components)
+    document = docutils.utils.new_document(os.fspath(file), settings)
+    parser.parse(file.read_text(), document)
+    return document
+
+
 class Page(NamedTuple):
     id: str
     title: str
-    summary: str | None
-    date: datetime.datetime
+    summary: str | None = None
+    date: datetime.datetime | None = None
+
+    @classmethod
+    def from_metadata_dict(cls, id: str, data: dict[str, str], /) -> Self | None:
+        try:
+            return cls(
+                id,
+                data['title'],
+                data.get('summary'),
+                datetime.datetime.fromisoformat(data['date']) if 'date' in data else None,
+            )
+        except KeyError:
+            return None
+
+    @classmethod
+    def from_file(cls, file: pathlib.Path) -> Self | None:
+        document = docutils_parse_rst(file)
+        metadata = {
+            element.attributes['name']: element.attributes['content'] for element in document if element.tagname == 'meta'
+        }
+        return cls.from_metadata_dict(file.stem, metadata)
 
 
 class Renderer:
@@ -164,29 +194,21 @@ class Renderer:
         self._args = base_render_args.copy()
         self._args['meta'] = {}
 
+        self._writer = rst2html5.HTML5Writer()
+
     def _write_html(self, file: pathlib.Path, html: str) -> None:
         file.parent.mkdir(parents=True, exist_ok=True)
         self.__logger.info(f'writing to {file}...')
         file.write_text(minify_html.minify(html) if self._minify else html)
 
-    @staticmethod
-    def _extract_metadata(html: str) -> dict[str, str]:
-        xml = ET.fromstring(html)
-        head = xml.findall('head')[0]
-        return {
-            meta.get('name'): meta.get('content')  # type: ignore
-            for meta in head.findall('meta')
-            if meta.get('name')
-        }
-
     @classmethod
-    def _fix_node(cls, node: ET.Element) -> None:
+    def _fix_html(cls, node: ET.Element) -> None:
         # sections
         for section in node.findall('section'):
             section.attrib['class'] = 'content'
             for h1 in section.findall('h1'):
                 h1.attrib['class'] = 'title'
-            cls._fix_node(section)
+            cls._fix_html(section)
         # lists
         for dl in node.findall('dl'):
             dl.attrib['class'] = 'box has-background-success-light'
@@ -209,54 +231,6 @@ class Renderer:
                     for elem in aside.findall(body_tag):
                         aside.remove(elem)
                         body.append(elem)
-
-    @classmethod
-    def _fix_html(cls, html: str) -> str:
-        """Fix rst2html5 generated HTML to use our styling."""
-        xml = ET.fromstring('<body>' + html + '</body>')  # add some root node because ET needs one
-        cls._fix_node(xml)
-        new_html = ET.tostring(xml).decode()
-        new_html = new_html.removeprefix('<body>').removesuffix('</body>')  # remove the root node we added
-        return new_html
-
-    @staticmethod
-    def _rst_to_docutils(file: pathlib.Path) -> dict[str, str]:
-        return docutils.core.publish_parts(
-            writer=rst2html5.HTML5Writer(),
-            source=file.read_text(),
-        )
-
-    @classmethod
-    def _render_args_from_rst(cls, file: pathlib.Path, args: dict[str, Any]) -> None:
-        """Convert rst to html and fill render arguments (body and metadata)."""
-        doc = cls._rst_to_docutils(file)
-        meta = cls._extract_metadata(doc['whole'])
-        args['meta'] = meta
-        args['body'] = cls._fix_html(doc['body'])
-        mtime = datetime.datetime.fromtimestamp(file.stat().st_mtime)
-        args['mtime'] = mtime.isoformat()
-        try:
-            args['page'] = cls.page(file, meta)
-        except KeyError:
-            args['page'] = None
-
-    @classmethod
-    def metadata(cls, file: pathlib.Path) -> dict[str, str]:
-        return cls._extract_metadata(cls._rst_to_docutils(file)['whole'])
-
-    @classmethod
-    def page(
-        cls,
-        file: pathlib.Path,
-        metadata: dict[str, str] | None = None,
-    ) -> Page:
-        meta = metadata or cls.metadata(file)
-        return Page(
-            file.stem,
-            meta['title'],
-            meta.get('summary'),
-            datetime.datetime.fromisoformat(meta['date']),
-        )
 
     def render_redirect_page(self, origin: pathlib.Path, target: pathlib.Path) -> None:
         assert origin.exists()
@@ -289,11 +263,26 @@ class Renderer:
         args |= render_args
 
         if content_file:
-            self._render_args_from_rst(content_file, args)
             if not outfile:
                 outfile = content_file.relative_to(self._content_root).with_suffix('.html')
+            # Generate HTML from rST
+            document = docutils_parse_rst(content_file, extra_components=[self._writer])
+            html = docutils.io.StringOutput(encoding='unicode')
+            self._writer.write(document, html)
+            # Find body and fix HTML
+            html_body = ET.fromstring(html.destination).find('body')
+            self._fix_html(html_body)
+            # Add render arguments
+            mtime = datetime.datetime.fromtimestamp(content_file.stat().st_mtime)
+            args |= {
+                'body': ET.tostring(html_body).decode(),
+                'mtime': mtime.isoformat(),
+                'page': Page.from_file(content_file),
+            }
+
         if not outfile:
             raise ValueError("Neither 'content_file' not 'outfile' were supplied")
+
         outfile = self._outdir.joinpath(outfile)
         root = pathlib.Path(os.path.relpath(self._outdir, outfile.parent))
         static = root / 'static'
@@ -312,7 +301,10 @@ class Renderer:
 
 
 def list_pages(path: pathlib.Path) -> Sequence[Page]:
-    return sorted([Renderer.page(file) for file in path.iterdir()], key=operator.attrgetter('id'))
+    return sorted(
+        [Page.from_file(file) for file in path.iterdir()],
+        key=operator.attrgetter('id'),
+    )
 
 
 def backwards_compatibility_fixes(renderer: Renderer, outdir: pathlib.Path) -> None:
