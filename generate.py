@@ -266,11 +266,12 @@ class Renderer:
             if not outfile:
                 outfile = content_file.relative_to(self._content_root).with_suffix('.html')
             # Generate HTML from rST
-            document = docutils_parse_rst(content_file, extra_components=[self._writer])
-            html = docutils.io.StringOutput(encoding='unicode')
-            self._writer.write(document, html)
+            html = docutils.core.publish_string(
+                source=content_file.read_text(),
+                writer=rst2html5.HTML5Writer(),
+            )
             # Find body and fix HTML
-            xml = ET.fromstring(html.destination).find('body')
+            xml = ET.fromstring(html).find('body')
             self._fix_html(xml)
             body = ET.tostring(xml).decode().strip()
             body = body.removeprefix('<body>').removesuffix('</body>')
