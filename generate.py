@@ -201,7 +201,7 @@ class Renderer:
             if not outfile:
                 outfile = content_file.relative_to(self._content_root).with_suffix('.html')
         if not outfile:
-            raise ValueError('Neither `content_file` not `outfile` were supplied')
+            raise ValueError("Neither 'content_file' not 'outfile' were supplied")
         outfile = self._outdir.joinpath(outfile)
         root = pathlib.Path(os.path.relpath(self._outdir, outfile.parent))
         static = root / 'static'
