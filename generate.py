@@ -286,7 +286,7 @@ class Renderer:
         outfile: pathlib.Path | None = None,
     ) -> None:
         args = self._args.copy()
-        args.update(render_args)
+        args |= render_args
 
         if content_file:
             self._render_args_from_rst(content_file, args)
