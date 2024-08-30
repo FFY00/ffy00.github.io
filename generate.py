@@ -9,8 +9,10 @@ import shutil
 import subprocess
 import sys
 import textwrap
+import types
 import xml.etree.ElementTree as ET
 
+from collections.abc import Iterable
 from typing import Any, NamedTuple, Sequence
 
 import docutils.core
@@ -18,7 +20,80 @@ import mako.exceptions
 import mako.lookup
 import minify_html
 import rich.logging
+import rich.traceback
 import rst2html5
+
+
+def mako_rich_traceback(
+    exception: BaseException,
+    *,
+    # rich.traceback.Traceback.from_exception kwargs
+    width: int | None = 100,
+    code_width: int | None = 88,
+    extra_lines: int = 3,
+    theme: str | None = None,
+    word_wrap: bool = False,
+    show_locals: bool = False,
+    locals_max_length: int = rich.traceback.LOCALS_MAX_LENGTH,
+    locals_max_string: int = rich.traceback.LOCALS_MAX_STRING,
+    locals_hide_dunder: bool = True,
+    locals_hide_sunder: bool = False,
+    indent_guides: bool = True,
+    suppress: Iterable[str | types.ModuleType] = (),
+    max_frames: int = 100,
+) -> rich.traceback.Traceback:
+    """Make a rich traceback with mako template information."""
+
+    if not exception:
+        exception = sys.exception()
+
+    rich_trace = rich.traceback.Traceback.extract(
+        type(exception),
+        exception,
+        exception.__traceback__,
+        # rich.traceback.Traceback.extract kwargs
+        show_locals=show_locals,
+        locals_max_length=locals_max_length,
+        locals_max_string=locals_max_string,
+        locals_hide_dunder=locals_hide_dunder,
+        locals_hide_sunder=locals_hide_sunder,
+    )
+
+    # Add missing mako information to the rich traceback.
+    stack_exception = exception
+    # ``rich.traceback.Stack`` is an object containing the information for each
+    # exception in the chain (as-in walking the ``exception.__context__``
+    # attribute).
+    for rich_stack in reversed(rich_trace.stacks):
+        mako_tb = mako.exceptions.RichTraceback(stack_exception, stack_exception.__traceback__)
+        # ``rich.traceback.Frame`` is an object containing the frame information
+        # needed to generate the traceback text for the user.
+        for rich_frame, mako_frame in zip(rich_stack.frames, mako_tb.records):
+            _, _, _, _, template_filename, template_lineno, _, _ = mako_frame
+            if template_filename and template_lineno:  # it's a mako template, override the frame info
+                rich_frame.filename = template_filename
+                rich_frame.lineno = template_lineno
+            else:
+                assert not template_filename or not template_lineno  # if one is set, the other must be too
+        stack_exception = stack_exception.__context__
+
+    return rich.traceback.Traceback(
+        rich_trace,
+        # rich.traceback.Traceback.__init__ kwargs
+        width=width,
+        code_width=code_width,
+        extra_lines=extra_lines,
+        theme=theme,
+        word_wrap=word_wrap,
+        show_locals=show_locals,
+        indent_guides=indent_guides,
+        locals_max_length=locals_max_length,
+        locals_max_string=locals_max_string,
+        locals_hide_dunder=locals_hide_dunder,
+        locals_hide_sunder=locals_hide_sunder,
+        suppress=suppress,
+        max_frames=max_frames,
+    )
 
 
 def main_parser() -> argparse.ArgumentParser:
@@ -291,7 +366,22 @@ def main(cli_args: Sequence[str]) -> None:
     backwards_compatibility_fixes(renderer, outdir)
 
 
+def excepthook(
+    type_: type[BaseException],
+    value: BaseException,
+    traceback: types.TracebackType | None,
+) -> None:
+    """Custom except hook that prints tracebacks with rich.
+
+    It uses ``mako_rich_traceback`` to add the mako template information to the rich traceback.
+    """
+    assert type_ is type(value)
+    assert traceback is value.__traceback__
+    rich.print(mako_rich_traceback(value))
+
+
 if __name__ == '__main__':
+    sys.excepthook = excepthook
     logging.basicConfig(level=logging.INFO, handlers=[rich.logging.RichHandler()])
 
     main(sys.argv[1:])
