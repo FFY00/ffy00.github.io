@@ -339,6 +339,7 @@ def main(cli_args: Sequence[str]) -> None:
 
     root = pathlib.Path(__file__).parent
     content = root / 'content'
+    external = root / 'external'
     outdir = pathlib.Path(args.outdir)
     out_css = outdir / 'static' / 'css'
 
@@ -387,8 +388,9 @@ def main(cli_args: Sequence[str]) -> None:
     # compile scss
     subprocess.check_call(
         [
-            'sassc',
+            'sass',
             '--style=compressed',
+            f'-I{external!s}',
             os.fspath(root / 'scss' / 'style.scss'),
             os.fspath(out_css / 'style.css'),
         ]
