@@ -11,7 +11,7 @@ import sys
 import textwrap
 import xml.etree.ElementTree as ET
 
-from typing import Any, Dict, NamedTuple, Optional, Sequence
+from typing import Any, Dict, NamedTuple, Sequence
 
 import docutils.core
 import mako.exceptions
@@ -46,7 +46,7 @@ def main_parser() -> argparse.ArgumentParser:
 class Page(NamedTuple):
     id: str
     title: str
-    summary: Optional[str]
+    summary: str | None
     date: datetime.datetime
 
 
@@ -156,7 +156,7 @@ class Renderer:
     def page(
         cls,
         file: pathlib.Path,
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: Dict[str, str] | None = None,
     ) -> Page:
         meta = metadata or cls.metadata(file)
         return Page(
@@ -189,9 +189,9 @@ class Renderer:
     def render(
         self,
         template: str,
-        content_file: Optional[pathlib.Path] = None,
+        content_file: pathlib.Path | None = None,
         render_args: Dict[str, Any] = {},
-        outfile: Optional[pathlib.Path] = None,
+        outfile: pathlib.Path | None = None,
     ) -> None:
         args = self._args.copy()
         args.update(render_args)
