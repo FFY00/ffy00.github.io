@@ -125,9 +125,9 @@ reasonable.
      - *Unknown*
 
    * - Cost
-     - .. class:: text-rate-3
+     - .. class:: text-rate-4
 
-          Medium
+          Medium-Low
 
 This was recommend to me, but I haven't ordered from them yet, though the prices
 seem reasonable.
