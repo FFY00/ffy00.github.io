@@ -11,7 +11,7 @@ import sys
 import textwrap
 import xml.etree.ElementTree as ET
 
-from typing import Any, Dict, NamedTuple, Sequence
+from typing import Any, NamedTuple, Sequence
 
 import docutils.core
 import mako.exceptions
@@ -62,7 +62,7 @@ class Renderer:
         outdir: pathlib.Path,
         content_root: pathlib.Path,
         minify: bool = True,
-        base_render_args: Dict[str, Any] = {},
+        base_render_args: dict[str, Any] = {},
     ) -> None:
         self.__logger = logging.getLogger(str(self.__class__))
         self._templates = templates
@@ -78,7 +78,7 @@ class Renderer:
         file.write_text(minify_html.minify(html) if self._minify else html)
 
     @staticmethod
-    def _extract_metadata(html: str) -> Dict[str, str]:
+    def _extract_metadata(html: str) -> dict[str, str]:
         xml = ET.fromstring(html)
         head = xml.findall('head')[0]
         return {
@@ -128,14 +128,14 @@ class Renderer:
         return new_html
 
     @staticmethod
-    def _rst_to_docutils(file: pathlib.Path) -> Dict[str, str]:
+    def _rst_to_docutils(file: pathlib.Path) -> dict[str, str]:
         return docutils.core.publish_parts(
             writer=rst2html5.HTML5Writer(),
             source=file.read_text(),
         )
 
     @classmethod
-    def _render_args_from_rst(cls, file: pathlib.Path, args: Dict[str, Any]) -> None:
+    def _render_args_from_rst(cls, file: pathlib.Path, args: dict[str, Any]) -> None:
         """Convert rst to html and fill render arguments (body and metadata)."""
         doc = cls._rst_to_docutils(file)
         meta = cls._extract_metadata(doc['whole'])
@@ -149,14 +149,14 @@ class Renderer:
             args['page'] = None
 
     @classmethod
-    def metadata(cls, file: pathlib.Path) -> Dict[str, str]:
+    def metadata(cls, file: pathlib.Path) -> dict[str, str]:
         return cls._extract_metadata(cls._rst_to_docutils(file)['whole'])
 
     @classmethod
     def page(
         cls,
         file: pathlib.Path,
-        metadata: Dict[str, str] | None = None,
+        metadata: dict[str, str] | None = None,
     ) -> Page:
         meta = metadata or cls.metadata(file)
         return Page(
@@ -190,7 +190,7 @@ class Renderer:
         self,
         template: str,
         content_file: pathlib.Path | None = None,
-        render_args: Dict[str, Any] = {},
+        render_args: dict[str, Any] = {},
         outfile: pathlib.Path | None = None,
     ) -> None:
         args = self._args.copy()
