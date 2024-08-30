@@ -211,6 +211,9 @@ class Renderer:
         # lists
         for dl in node.findall('dl'):
             dl.attrib['class'] = 'box has-background-success-light'
+        # tables
+        for table in node.findall('table'):
+            table.attrib['class'] = 'table'
         # admonitions
         for aside in node.findall('aside'):
             classes = aside.attrib['class'].split(' ')
