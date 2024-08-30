@@ -17,6 +17,7 @@ import docutils.core
 import mako.exceptions
 import mako.lookup
 import minify_html
+import rich.logging
 import rst2html5
 
 
@@ -291,5 +292,6 @@ def main(cli_args: Sequence[str]) -> None:
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO, handlers=[rich.logging.RichHandler()])
+
     main(sys.argv[1:])
