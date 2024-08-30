@@ -25,8 +25,8 @@ import textwrap
 import types
 import xml.etree.ElementTree as ET
 
-from collections.abc import Collection, Iterable
-from typing import Any, NamedTuple, Self, Sequence
+from collections.abc import Collection, Iterable, Mapping
+from typing import Any, Literal, NamedTuple, Self, Sequence
 
 import docutils.core
 import docutils.frontend
@@ -306,11 +306,28 @@ class Renderer:
             self._write_html(outfile, html)
 
 
-def list_pages(path: pathlib.Path) -> Sequence[Page]:
-    return sorted(
-        [Page.from_file(file) for file in path.iterdir()],
-        key=operator.attrgetter('id'),
-    )
+class Section(NamedTuple):
+    name: str
+    title: str
+    directory: pathlib.Path
+    output_path: pathlib.Path
+    sort_by: Literal['id', 'title', 'ctime', 'mtime'] = 'id'
+
+    @property
+    def pages(self) -> Mapping[Self, pathlib.Path]:
+        page_info = [
+            {
+                'file': path,
+                'page': (page := Page.from_file(path)),
+                'id': page.id,
+                'title': page.title,
+                'ctime': path.stat().st_ctime,
+                'mtime': path.stat().st_mtime,
+            }
+            for path in self.directory.iterdir()
+            if path.is_file()
+        ]
+        return {info['page']: info['file'] for info in sorted(page_info, key=operator.itemgetter(self.sort_by))}
 
 
 def backwards_compatibility_fixes(renderer: Renderer, outdir: pathlib.Path) -> None:
@@ -335,30 +352,41 @@ def main(cli_args: Sequence[str]) -> None:
 
     out_css.mkdir(parents=True, exist_ok=True)
 
+    sections = [
+        Section(
+            name='Blog',
+            title='Blog Posts',
+            directory=content / 'blog',
+            output_path=pathlib.Path('blog'),
+            sort_by='id',
+        ),
+    ]
+
     templates = mako.lookup.TemplateLookup(directories=[root / 'templates'])
     renderer = Renderer(
         templates,
         outdir,
         content,
         not args.skip_minify,
-        {'url': args.url},
+        {
+            'url': args.url,
+            'sections': sections,
+        },
     )
 
     # render
     renderer.render('index.html', content / 'index.rst')
-    renderer.render(
-        'blog-index.html',
-        outfile=pathlib.Path('blog', 'index.html'),
-        render_args={
-            'posts': list_pages(content / 'blog'),
-        },
-    )
-    for file in content.joinpath('blog').iterdir():
+    for section in sections:
         renderer.render(
-            'blog-post.html',
-            file,
-            outfile=pathlib.Path('blog', file.stem, 'index.html'),
+            'article-index.html',
+            outfile=section.output_path / 'index.html',
+            render_args={
+                'title': section.title,
+                'pages': section.pages,
+            },
         )
+        for file in section.pages.values():
+            renderer.render('article.html', file, outfile=section.output_path / file.stem / 'index.html')
 
     # generate pygments theme
     pygments_css = subprocess.check_output(['pygmentize', '-S', 'default', '-f', 'html', '-a', 'pre'])

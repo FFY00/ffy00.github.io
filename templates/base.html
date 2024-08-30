@@ -38,7 +38,9 @@
         <div id="main-navbar" class="navbar-menu">
           <div class="navbar-end">
             <a class="navbar-item" href="${root}">Home</a>
-            <a class="navbar-item" href="${root}/blog">Blog</a>
+            % for section in sections:
+            <a class="navbar-item" href="${root}/${section.output_path.as_posix()}">${section.name}</a>
+            % endfor
           </div>
         </div>
       </nav>

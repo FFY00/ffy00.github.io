@@ -1,22 +1,24 @@
 <%inherit file="base.html"/>
 
-<h1 class="title has-text-centered">Blog Posts</h1>
+<h1 class="title has-text-centered">${title}</h1>
 
-% for post in reversed(posts):
+% for page in reversed(pages):
 <div class="columns">
   <div class="column is-full">
     <article class="notification has-background-success-light">
       <div class="columns">
         <div class="column">
-          <a class="title" href="${post.id}">${post.title}</a>
+          <a class="title" href="${page.id}">${page.title}</a>
         </div>
+        % if page.date:
         <div class="column is-narrow">
-          <h2 class="subtitle">${post.date.strftime('%H:%M %d/%m/%Y')}</h2>
+          <h2 class="subtitle">${page.date.strftime('%H:%M %d/%m/%Y')}</h2>
         </div>
+        % endif
       </div>
       <div class="block content">
-        % if post.summary:
-        <p>${post.summary}</p>
+        % if page.summary:
+        <p>${page.summary}</p>
         % endif
       </div>
     </article>
