@@ -24,10 +24,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install sassc
-          pip install -r requirements.txt
+          pip install pipx
 
       - name: Generate website
-        run: ./generate.py deploy
+        run: pipx run generate.py -m deploy
 
       - uses: actions/upload-pages-artifact@v3
         with:

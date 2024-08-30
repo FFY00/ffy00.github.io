@@ -1,3 +1,0 @@
-mako
-rst2html5
-minify-html
