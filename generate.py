@@ -270,8 +270,10 @@ class Renderer:
             html = docutils.io.StringOutput(encoding='unicode')
             self._writer.write(document, html)
             # Find body and fix HTML
-            html_body = ET.fromstring(html.destination).find('body')
-            self._fix_html(html_body)
+            xml = ET.fromstring(html.destination).find('body')
+            self._fix_html(xml)
+            body = ET.tostring(xml).decode().strip()
+            body = body.removeprefix('<body>').removesuffix('</body>')
             # Add render arguments
             stat = content_file.stat()
             ctime = datetime.datetime.fromtimestamp(stat.st_ctime)
@@ -280,7 +282,7 @@ class Renderer:
             if page and page.date:
                 ctime = page.date
             args |= {
-                'body': ET.tostring(html_body).decode(),
+                'body': body,
                 'ctime': ctime,
                 'mtime': mtime,
                 'page': page,
