@@ -21,7 +21,6 @@ import pathlib
 import shutil
 import subprocess
 import sys
-import textwrap
 import types
 import xml.etree.ElementTree as ET
 
@@ -232,26 +231,6 @@ class Renderer:
                         aside.remove(elem)
                         body.append(elem)
 
-    def render_redirect_page(self, origin: pathlib.Path, target: pathlib.Path) -> None:
-        assert origin.exists()
-        new_url = origin.relative_to(target.parent, walk_up=True).as_posix()
-        html = textwrap.dedent(f"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Redirecting...</title>
-                <link rel="canonical" href="{new_url}" />
-                <meta charset="utf-8" />
-                <meta http-equiv="refresh" content="0; url={new_url}" />
-            </head>
-            <body>
-                <p>Redirecting...</p>
-            </body>
-            </html>
-        """)
-        target.parent.mkdir(exist_ok=True, parents=True)
-        self._write_html(target, html)
-
     def render(
         self,
         template: str,
@@ -307,6 +286,16 @@ class Renderer:
             raise e
         finally:
             self._write_html(outfile, html)
+
+    def render_redirect_page(self, origin: pathlib.Path, target: pathlib.Path) -> None:
+        assert origin.exists()
+        self.render(
+            'redirect.html',
+            outfile=target,
+            render_args={
+                'new_url': origin.relative_to(target.parent, walk_up=True).as_posix(),
+            },
+        )
 
 
 class Section(NamedTuple):
