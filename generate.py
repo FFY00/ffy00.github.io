@@ -273,11 +273,17 @@ class Renderer:
             html_body = ET.fromstring(html.destination).find('body')
             self._fix_html(html_body)
             # Add render arguments
-            mtime = datetime.datetime.fromtimestamp(content_file.stat().st_mtime)
+            stat = content_file.stat()
+            ctime = datetime.datetime.fromtimestamp(stat.st_ctime)
+            mtime = datetime.datetime.fromtimestamp(stat.st_mtime)
+            page = Page.from_file(content_file)
+            if page and page.date:
+                ctime = page.date
             args |= {
                 'body': ET.tostring(html_body).decode(),
-                'mtime': mtime.isoformat(),
-                'page': Page.from_file(content_file),
+                'ctime': ctime,
+                'mtime': mtime,
+                'page': page,
             }
 
         if not outfile:

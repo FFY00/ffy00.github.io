@@ -6,12 +6,15 @@
 
     % if page:
     <title>Filipe Laíns - ${page.title}</title>
-
-    <meta property="article:published_time" content="${page.date}">
-    <meta property="article:modified_time" content="${mtime}">
     % else:
     <title>Filipe Laíns</title>
     % endif
+
+    % if ctime and mtime:
+    <meta property="article:published_time" content="${ctime.isoformat()}">
+    <meta property="article:modified_time" content="${mtime.isoformat()}">
+    % endif
+
     <link rel="stylesheet" href="${css}/style.css">
     <link rel="stylesheet" href="${css}/pygments.css">
 
