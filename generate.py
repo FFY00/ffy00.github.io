@@ -21,6 +21,7 @@ import mako.lookup
 import minify_html
 import rich.logging
 import rich.traceback
+import rich_argparse
 import rst2html5
 
 
@@ -97,7 +98,9 @@ def mako_rich_traceback(
 
 
 def main_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        formatter_class=rich_argparse.RichHelpFormatter,
+    )
     parser.add_argument(
         'outdir',
         type=str,
