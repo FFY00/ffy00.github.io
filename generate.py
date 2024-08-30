@@ -356,6 +356,13 @@ def main(cli_args: Sequence[str]) -> None:
             output_path=pathlib.Path('blog'),
             sort_by='id',
         ),
+        Section(
+            name='Resources',
+            title='Resources',
+            directory=content / 'resources',
+            output_path=pathlib.Path('resources'),
+            sort_by='ctime',
+        ),
     ]
 
     templates = mako.lookup.TemplateLookup(directories=[root / 'templates'])
