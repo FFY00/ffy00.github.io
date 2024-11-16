@@ -343,7 +343,7 @@ def main(cli_args: Sequence[str]) -> None:
     root = pathlib.Path(__file__).parent
     content = root / 'content'
     external = root / 'external'
-    outdir = pathlib.Path(args.outdir)
+    outdir = pathlib.Path(args.outdir).absolute()
     out_css = outdir / 'static' / 'css'
 
     out_css.mkdir(parents=True, exist_ok=True)
