@@ -1,5 +1,5 @@
 .. meta::
-    :title: Development log for ${entry_name}
+    :title: ${entry_name}
     :date: ${date}
 
 

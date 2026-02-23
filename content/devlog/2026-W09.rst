@@ -1,5 +1,5 @@
 .. meta::
-    :title: Development log for 2026-W09
+    :title: 2026-W09
     :date: 2026-02-23T20:20:55.963961
 
 
