@@ -247,6 +247,7 @@ class Renderer:
         content_file: pathlib.Path | None = None,
         render_args: dict[str, Any] = {},
         outfile: pathlib.Path | None = None,
+        html_settings: dict | None = None,
     ) -> None:
         args = self._args.copy()
         args |= render_args
@@ -258,6 +259,7 @@ class Renderer:
             html = docutils.core.publish_string(
                 source=content_file.read_text(),
                 writer=rst2html5.HTML5Writer(),
+                settings_overrides=html_settings,
             )
             # Find body and fix HTML
             xml = ET.fromstring(html).find('body')
@@ -316,6 +318,7 @@ class Section(NamedTuple):
     sort_by: Literal['id', 'title', 'ctime', 'mtime'] = 'id'
     index_template: str = 'article-index.html'
     article_template: str = 'article.html'
+    content_html_settings: dict | None = None
 
     @property
     def pages(self) -> Mapping[Self, pathlib.Path]:
