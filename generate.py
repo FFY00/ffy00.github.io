@@ -85,11 +85,13 @@ def mako_rich_traceback(
         # needed to generate the traceback text for the user.
         for rich_frame, mako_frame in zip(rich_stack.frames, mako_tb.records):
             _, _, _, _, template_filename, template_lineno, _, _ = mako_frame
-            if template_filename and template_lineno:  # it's a mako template, override the frame info
+            if template_filename and template_lineno:
+                # it's a mako template, override the frame info
                 rich_frame.filename = template_filename
                 rich_frame.lineno = template_lineno
             else:
-                assert not template_filename or not template_lineno  # if one is set, the other must be too
+                # if one is set, the other must be too
+                assert not template_filename or not template_lineno
         stack_exception = stack_exception.__context__
 
     return rich.traceback.Traceback(
@@ -136,7 +138,10 @@ def main_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def docutils_parse_rst(file: pathlib.Path, extra_components: Collection[docutils.Component] = ()) -> docutils.nodes.document:
+def docutils_parse_rst(
+    file: pathlib.Path,
+    extra_components: Collection[docutils.Component] = (),
+) -> docutils.nodes.document:
     parser = docutils.parsers.rst.Parser()
     settings = docutils.frontend.get_default_settings(parser, *extra_components)
     document = docutils.utils.new_document(os.fspath(file), settings)
@@ -166,7 +171,9 @@ class Page(NamedTuple):
     def from_file(cls, file: pathlib.Path) -> Self | None:
         document = docutils_parse_rst(file)
         metadata = {
-            element.attributes['name']: element.attributes['content'] for element in document if element.tagname == 'meta'
+            element.attributes['name']: element.attributes['content']
+            for element in document
+            if element.tagname == 'meta'
         }
         return cls.from_metadata_dict(file.stem, metadata)
 
@@ -322,7 +329,10 @@ class Section(NamedTuple):
             for path in self.directory.iterdir()
             if path.is_file()
         ]
-        return {info['page']: info['file'] for info in sorted(page_info, key=operator.itemgetter(self.sort_by))}
+        return {
+            info['page']: info['file']
+            for info in sorted(page_info, key=operator.itemgetter(self.sort_by))
+        }
 
 
 def backwards_compatibility_fixes(renderer: Renderer, outdir: pathlib.Path) -> None:
@@ -369,9 +379,9 @@ def main(cli_args: Sequence[str]) -> None:
     renderer = Renderer(
         templates,
         outdir,
-        content,
-        not args.skip_minify,
-        {
+        content_root=content,
+        minify=not args.skip_minify,
+        base_render_args={
             'url': args.url,
             'sections': sections,
         },
@@ -381,7 +391,7 @@ def main(cli_args: Sequence[str]) -> None:
     renderer.render('index.html', content / 'index.rst')
     for section in sections:
         renderer.render(
-            'article-index.html',
+            template='article-index.html',
             outfile=section.output_path / 'index.html',
             render_args={
                 'title': section.title,
@@ -389,10 +399,17 @@ def main(cli_args: Sequence[str]) -> None:
             },
         )
         for file in section.pages.values():
-            renderer.render('article.html', file, outfile=section.output_path / file.stem / 'index.html')
+            renderer.render(
+                template='article.html',
+                content_file=file,
+                outfile=section.output_path / file.stem / 'index.html',
+                html_settings=section.content_html_settings,
+            )
 
     # generate pygments theme
-    pygments_css = subprocess.check_output(['pygmentize', '-S', 'default', '-f', 'html', '-a', 'pre'])
+    pygments_css = subprocess.check_output(
+        ['pygmentize', '-S', 'default', '-f', 'html', '-a', 'pre']
+    )
     out_css.joinpath('pygments.css').write_bytes(pygments_css)
 
     # compile scss
