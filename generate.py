@@ -314,6 +314,8 @@ class Section(NamedTuple):
     directory: pathlib.Path
     output_path: pathlib.Path
     sort_by: Literal['id', 'title', 'ctime', 'mtime'] = 'id'
+    index_template: str = 'article-index.html'
+    article_template: str = 'article.html'
 
     @property
     def pages(self) -> Mapping[Self, pathlib.Path]:
@@ -391,7 +393,7 @@ def main(cli_args: Sequence[str]) -> None:
     renderer.render('index.html', content / 'index.rst')
     for section in sections:
         renderer.render(
-            template='article-index.html',
+            template=section.index_template,
             outfile=section.output_path / 'index.html',
             render_args={
                 'title': section.title,
@@ -400,7 +402,7 @@ def main(cli_args: Sequence[str]) -> None:
         )
         for file in section.pages.values():
             renderer.render(
-                template='article.html',
+                template=section.article_template,
                 content_file=file,
                 outfile=section.output_path / file.stem / 'index.html',
                 html_settings=section.content_html_settings,
