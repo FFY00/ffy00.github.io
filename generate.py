@@ -278,6 +278,7 @@ class Renderer:
                 'ctime': ctime,
                 'mtime': mtime,
                 'page': page,
+                'content_file': content_file,
             }
 
         if not outfile:
@@ -377,6 +378,15 @@ def main(cli_args: Sequence[str]) -> None:
             directory=content / 'resources',
             output_path=pathlib.Path('resources'),
             sort_by='ctime',
+        ),
+        Section(
+            name='Development Log',
+            title='Development Log',
+            directory=content / 'devlog',
+            output_path=pathlib.Path('devlog'),
+            sort_by='ctime',
+            article_template='devlog-article.html',
+            content_html_settings={'initial_header_level': 4},
         ),
     ]
 

@@ -1,0 +1,20 @@
+<%inherit file="base.html"/>
+
+<div class="columns is-centered is-vcentered">
+    <div class="column is-narrow">
+        <h1 class="title">Development log for</h1>
+    </div>
+    <div class="column is-narrow">
+        <button class="button is-success is-large has-text-weight-bold">${content_file.stem}</button>
+    </div>
+</div>
+
+% if page.date:
+<h1 class="subtitle has-text-centered mt-1">Date: ${page.date.strftime('%d/%m/%Y %H:%M')}</h1>
+% elif mtime:
+<h1 class="subtitle has-text-centered mt-1">Last updated: ${mtime.strftime('%d/%m/%Y %H:%M')}</h1>
+% endif
+
+<div class="content has-background-light box is-medium">
+  ${body}
+</div>
