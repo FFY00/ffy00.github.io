@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+
+# /// script
+# dependencies = [
+#   "mako",
+# ]
+# ///
+
 import argparse
 import datetime
 import pathlib
