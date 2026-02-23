@@ -14,6 +14,35 @@ Europe
 ======
 
 
+`Haas <https://www.haascnc.com/>`_
+----------------------------------
+
+.. list-table::
+
+   * - Quality
+     - .. class:: text-rate-5
+
+          High
+
+   * - Cost
+     - .. class:: text-rate-3
+
+          Medium-High
+
+High quality, but while it comes with matching (high) prices for most things,
+simple parts, accessories, and consumables are very reasonably priced. I have
+bought a couple items from them, like a V-block pair, an indicator stand, a
+deburring tool, thread gauges, feeler gauges, lapping stones, etc. and am really
+happy with them. I'll likely buy more measuring, inspection, and workholding
+accessories, as well as some of the other reasonably affordable items.
+
+*Haas* is one of the most reputable machining tooling vendors.
+
+High quality, and pretty good prices. I have bought a surface place and machine
+vise from them. The surface plate in particular was an excellent deal for the
+specifications.
+
+
 `Knuth <https://www.knuth.com//>`_
 ----------------------------------
 
