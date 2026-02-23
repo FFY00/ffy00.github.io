@@ -15,7 +15,7 @@ still up in the air.
 
 I wanted to write this post to help clarify where I am with regards to my
 commitments, but also because I believe it would be helpful to talk about my
-struggles publicly. Mental health is a topic that is still unconfortable for
+struggles publicly. Mental health is a topic that is still uncomfortable for
 many people, so I wanted to share my experience to help show people that might
 be going through a similar situation that they are not along. I'm also hoping
 that maybe people who have gone through something similar may have some some
