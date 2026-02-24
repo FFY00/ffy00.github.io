@@ -13,7 +13,6 @@ repos:
     rev: v2.4.1
     hooks:
       - id: codespell
-        args: [-L, sur, -L, vise, -L, collet, -L, collets]
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.10.0
     hooks:
