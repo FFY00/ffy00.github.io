@@ -39,6 +39,9 @@ import rich_argparse
 import rst2html5
 
 
+LOGGER = logging.getLogger(__name__)
+
+
 def mako_rich_traceback(
     exception: BaseException,
     *,
@@ -192,7 +195,7 @@ class Renderer:
         minify: bool = True,
         base_render_args: dict[str, Any] = {},
     ) -> None:
-        self.__logger = logging.getLogger(str(self.__class__))
+        self.__logger = LOGGER.getChild(self.__class__.__name__)
         self._templates = templates
         self._outdir = outdir
         self._content_root = content_root
