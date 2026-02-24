@@ -21,6 +21,7 @@ import pathlib
 import shutil
 import subprocess
 import sys
+import time
 import types
 import xml.etree.ElementTree as ET
 
@@ -361,6 +362,8 @@ def main(cli_args: Sequence[str]) -> None:
 
     main_logger = LOGGER.getChild('main')
 
+    start_timestamp = time.perf_counter()
+
     root = pathlib.Path(__file__).parent
     content = root / 'content'
     external = root / 'external'
@@ -452,6 +455,13 @@ def main(cli_args: Sequence[str]) -> None:
 
     main_logger.debug('applying backwards compatibility fixes...')
     backwards_compatibility_fixes(renderer, outdir)
+
+    stop_timestamp = time.perf_counter()
+
+    main_logger.info(
+        f'Build finished successfully in {stop_timestamp - start_timestamp:04f}s, '
+        f'files written to {outdir.relative_to(pathlib.Path.cwd()).as_posix()!r}.'
+    )
 
 
 def excepthook(
