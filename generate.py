@@ -207,7 +207,7 @@ class Renderer:
 
     def _write_html(self, file: pathlib.Path, html: str) -> None:
         file.parent.mkdir(parents=True, exist_ok=True)
-        self.__logger.info(f'writing to {file}...')
+        self.__logger.info(f'writing to {file}')
         file.write_text(minify_html.minify(html) if self._minify else html)
 
     @classmethod
@@ -359,6 +359,8 @@ def main(cli_args: Sequence[str]) -> None:
     parser = main_parser()
     args = parser.parse_args(cli_args)
 
+    main_logger = LOGGER.getChild('main')
+
     root = pathlib.Path(__file__).parent
     content = root / 'content'
     external = root / 'external'
@@ -406,6 +408,7 @@ def main(cli_args: Sequence[str]) -> None:
     )
 
     # render
+    main_logger.debug('rendering HTML...')
     renderer.render('index.html', content / 'index.rst')
     for section in sections:
         renderer.render(
@@ -425,12 +428,14 @@ def main(cli_args: Sequence[str]) -> None:
             )
 
     # generate pygments theme
+    main_logger.debug('generating pygments theme...')
     pygments_css = subprocess.check_output(
         ['pygmentize', '-S', 'default', '-f', 'html', '-a', 'pre']
     )
     out_css.joinpath('pygments.css').write_bytes(pygments_css)
 
     # compile scss
+    main_logger.debug('compiling SASS stylecheats...')
     subprocess.check_call(
         [
             'sass',
@@ -442,8 +447,10 @@ def main(cli_args: Sequence[str]) -> None:
     )
 
     # copy static files
+    main_logger.debug('copying static files...')
     shutil.copytree(root / 'static', outdir / 'static', dirs_exist_ok=True)
 
+    main_logger.debug('applying backwards compatibility fixes...')
     backwards_compatibility_fixes(renderer, outdir)
 
 
