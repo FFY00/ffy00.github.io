@@ -189,7 +189,7 @@ class Renderer:
         'note': 'is-info',
     }
     _GITHUB_TRACKER_RE = re.compile(
-        r'https://github.com/(?P<project>\w+/\w+)/(issues|pull)/(?P<id>\d+)'
+        r'https://github.com/(?P<project>\w+/\w+)(/(issues|pull)/(?P<issue>\d+))?'
     )
 
     def __init__(
@@ -252,7 +252,9 @@ class Renderer:
         for element in node.iter():
             if element.tag == 'a':
                 if match := cls._GITHUB_TRACKER_RE.match(element.text):
-                    element.text = f'{match.group("project")}#{match.group("id")}'
+                    element.text = match.group('project')
+                    if issue := match.group('issue'):
+                        element.text += f'#{issue}'
 
     def render(
         self,
