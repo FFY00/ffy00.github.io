@@ -18,6 +18,7 @@ import logging
 import operator
 import os.path
 import pathlib
+import re
 import shutil
 import subprocess
 import sys
@@ -187,6 +188,9 @@ class Renderer:
         'caution': 'is-warning',
         'note': 'is-info',
     }
+    _GITHUB_TRACKER_RE = re.compile(
+        r'https://github.com/(?P<project>\w+/\w+)/(issues|pull)/(?P<id>\d+)'
+    )
 
     def __init__(
         self,
@@ -244,6 +248,11 @@ class Renderer:
                     for elem in aside.findall(body_tag):
                         aside.remove(elem)
                         body.append(elem)
+        # shorten github links
+        for element in node.iter():
+            if element.tag == 'a':
+                if match := cls._GITHUB_TRACKER_RE.match(element.text):
+                    element.text = f'{match.group("project")}#{match.group("id")}'
 
     def render(
         self,
