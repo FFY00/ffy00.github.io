@@ -394,7 +394,7 @@ def main(cli_args: Sequence[str]) -> None:
             output_path=pathlib.Path('devlog'),
             sort_by='ctime',
             article_template='devlog-article.html',
-            content_html_settings={'initial_header_level': 4},
+            content_html_settings={'initial_header_level': 2},
         ),
     ]
 
