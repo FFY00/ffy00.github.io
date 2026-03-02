@@ -24,6 +24,7 @@ import subprocess
 import sys
 import time
 import types
+import warnings
 import xml.etree.ElementTree as ET
 
 from collections.abc import Collection, Iterable, Mapping
@@ -162,6 +163,8 @@ class Page(NamedTuple):
 
     @classmethod
     def from_metadata_dict(cls, id: str, data: dict[str, str], /) -> Self | None:
+        if 'title' not in data and data:
+            warnings.warn(f"page {id!r} does not set 'title' but specifies other metadata")
         try:
             return cls(
                 id,
@@ -341,14 +344,14 @@ class Section(NamedTuple):
         page_info = [
             {
                 'file': path,
-                'page': (page := Page.from_file(path)),
+                'page': page,
                 'id': page.id,
                 'title': page.title,
                 'ctime': path.stat().st_ctime,
                 'mtime': path.stat().st_mtime,
             }
             for path in self.directory.iterdir()
-            if path.is_file()
+            if path.is_file() and (page := Page.from_file(path))
         ]
         return {
             info['page']: info['file']
