@@ -6,12 +6,138 @@
 This Week
 ---------
 
+Introducing the Development Log
++++++++++++++++++++++++++++++++
 
-* Added development log section to ffy00.github.io
+This week I added the 'Development Log' section to my ffy00.github.io website.
+The main goal of this log is to help to try to help me manage my AHDH. I have
+been really struggling with productivity and reliability for the last couple
+years, which has been deterimental on both personal and professional levels.
+I'm hoping by keeping better track of my work I will be able to better control
+my focus, allowing me to more reliably follow through with ongoing work.
+Additionally, I will also try to roughly plan the work for the following week
+here, to hopefully help keep me accountable.
 
+CPython
++++++++
+
+``ModuleNotFoundError`` hints
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Following the addition of module name suggestion hints to
+``ModuleNotFoundError`` in https://github.com/python/cpython/pull/142512, my
+main contribution to CPython this week was adding a hint for when a native
+extension module for another Python installation (could be different ABI, arch,
+etc.) is present.
+
+.. code:: python
+
+    Python 3.15.0a6+ free-threading build (heads/main-dirty:f282f7aed91, Feb 19 2026, 17:33:04) [GCC 15.2.1 20260209] on linux
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>> import foo
+    Traceback (most recent call last):
+      File "<python-input-0>", line 1, in <module>
+        import foo
+    ModuleNotFoundError: No module named 'foo'. Although a module with this name was found for a different Python version (foo.cpython-315-x86_64-linux-gnu.so).
+
+This was motivated by a discussion with the maintainers of Python on
+Debian/Ubuntu, who informed me of their plans for 3.15.
+
+They are planning to ship ship a free-threading build of Python alongside the
+regular one, and to make packaging easier for them, they are planning to patch
+the free-threading build to use the same site-packages directory as the regular
+one.
+
+While they can account for this in the Python packages they ship, it completely
+breaks Python packaging tooling. While possible, it is extremely uncommon, and
+unpractical, for projects to publish non-pure wheels to PyPI that are compatible
+with both regular and free-threading builds of Python — practiacally all
+published non-pure wheels target a single Python ABI variant.
+
+Sharing site-packages between the two builds means Python installers targeting
+each build will be install packages to the same location. Given that non-pure
+wheels will only support one of the builds, installing packages on one build
+will also be placing incompatible packages in the other.
+
+For single module packages, trying to import them in an incompatible build will
+result in a ``ModuleNotFoundError``. On more complex packages this can lead to
+internal imports failing, which can then snowball into more complex and
+obscure errors. Other aggravating detail is that most Python installers will see
+that the package is installed, but will not detect that it is incompatible with
+the running interpreter. Most users looking at a ``ModuleNotFoundError`` will
+think the package is not installed, so they will try to install it, which may
+fail with the installer telling them the package is already installed. This is a
+very confusing user experience.
+
+Trying to detect such cases and adding a hint to ``ModuleNotFoundError`` should
+somewhat help with the user experience, though it will still be pretty awful.
+That said, installing packages to system environment does requires users to pass
+``--break-system-packages``, so with Python 3.15 coming up we should try to more
+aggressively discourage from overriding this this safeguard.
+
+Initialization
+~~~~~~~~~~~~~~
+
+At the end of this week I also started working on a couple improvements to the
+Python initialization.
+
+* Warn when we can't find the standard library  during the
+  `module search path initialization`_
+* Freeze all modules needed during the interpreter initialization
+* Add the ``-X pathconfig_warnings``/``PYTHON_PATHCONFIG_WARNINGS`` options to
+  disable `module search path initialization`_ warnings
+
+The main motivation for this work was to improve the UX when the module search
+path is broken, resulting in obscure/unclear errors, such as the following.
+
+.. code:: shell
+
+    $ PYTHONHOME=nonsense ./python -c 'print("foo!")'
+    Fatal Python error: Failed to import encodings module
+    Python runtime state: core initialized
+    Exception ignored in the internal traceback machinery:
+    ModuleNotFoundError: No module named 'traceback'
+    ModuleNotFoundError: No module named 'encodings'
+
+    Stack (most recent call first):
+
+Other minor work
+~~~~~~~~~~~~~~~~
+
+* Researched and provided feedback to https://github.com/python/cpython/issues/82963
+* Noticed an issue in the lazy import tests and fixed (https://github.com/python/cpython/pull/145213)
+* Noticed that ``make install`` was producing some errors and fixed it (https://github.com/python/cpython/pull/145221)
+* Minor update to pixi packages docs (https://github.com/python/cpython/pull/145222)
+* Looked into the state of https://github.com/python/cpython/issues/133882
+* Reviewed and merged https://github.com/python/cpython/pull/144637
+* Merged https://github.com/python/cpython/pull/137296
+
+pkgconf-pypi
+++++++++++++
+
+Reached a decision in https://github.com/pypackaging-native/pkgconf-pypi/issues/97
+regarding the changes for next version, and started implementing it.
+
+This consists of moving the special Python-specifc behavior from the ``pkgconf``
+script into a new ``pkgconf-pypi`` script, leaving the ``pkgconf`` script
+behaving as a "vanilla" ``pkgconf`` binary by default, with some caveats.
 
 Next Week...
 ------------
 
+My main goal for next week is to finish implementing the changes for the next
+https://github.com/pypackaging-native/pkgconf-pypi version, and finishing the
+CPython initialization improvements.
 
-Nothing planned yet.
+While waiting for a review on the ``pkgconf-pypi`` work, I'd like to start on
+the following:
+
+* Document the technical aspects of https://github.com/FFY00/dynamic-library
+* Add text to PEP 739 specifying what happens on conflicts
+
+Some other lower priority work I'd like to pick back up the next couple weeks:
+
+* Finish https://github.com/scipy/scipy/pull/24064
+
+
+.. _module search path initialization: https://docs.python.org/3/library/sys_path_init.html
