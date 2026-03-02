@@ -189,7 +189,7 @@ class Renderer:
         'note': 'is-info',
     }
     _GITHUB_TRACKER_RE = re.compile(
-        r'https://github.com/(?P<project>\w+/\w+)(/(issues|pull)/(?P<issue>\d+))?'
+        r'https://github.com/(?P<project>[^/]+/[^/]+)(/(issues|pull)/(?P<issue>\d+))?'
     )
 
     def __init__(
