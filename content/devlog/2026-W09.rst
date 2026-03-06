@@ -10,13 +10,13 @@ Introducing the Development Log
 +++++++++++++++++++++++++++++++
 
 This week I added the 'Development Log' section to my ffy00.github.io website.
-The main goal of this log is to help to try to help me manage my AHDH. I have
-been really struggling with productivity and reliability for the last couple
-years, which has been deterimental on both personal and professional levels.
-I'm hoping by keeping better track of my work I will be able to better control
-my focus, allowing me to more reliably follow through with ongoing work.
-Additionally, I will also try to roughly plan the work for the following week
-here, to hopefully help keep me accountable.
+The main goal of this log is to try to help me manage my AHDH. I have been
+really struggling with productivity and reliability for the last couple years,
+which has been deterimental on both personal and professional levels. I'm hoping
+by keeping better track of my work I will be able to better control my focus,
+allowing me to more reliably follow through with ongoing work. Additionally, I
+will also try to roughly plan the work for the following week here, to hopefully
+help keep me accountable.
 
 CPython
 +++++++
