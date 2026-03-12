@@ -13,7 +13,7 @@ accomplish there — I think the UX improvements are significant — but since n
 of that was funded, I have no billable hours for this entire week, which is not
 sustainable.
 
-I'll link my `Github sponsors page`_ here, in case anyone wants make a
+I'll link my `Github sponsors page`_ here, in case anyone wants to make a
 contribution for this work.
 
 CPython
@@ -23,7 +23,7 @@ This week I worked on a couple improvements to the interpreter initialization.
 
 The initial motivation was to tackle the obscure/unclear "unraisable" errors
 that can occur while setting up the interpreter. A common example is the
-``No module named 'encodings'`` error resulting of the standard library being
+``No module named 'encodings'`` error resulting from the standard library being
 missing from the `module search path`_.
 
 .. code:: shell
@@ -55,14 +55,14 @@ Additionally, with the addition of this warning, I also added the
 environment variable, which allow disabling warnings issued by the
 `module search path`_ initialization.
 
-You can read a more in-dept write-up on the technical details in the dedicated
+You can read a more in-depth write-up on the technical details in the dedicated
 section below.
 
 Finally, also related to the UX during the Python interpreter initialization,
 I'd like to highlight `Steve Dower`_'s PR to remove the hard dependency on the
 ``__pyrepl`` module (https://github.com/python/cpython/pull/145159) from
 several places. This makes it so that the interpreter automatically falls back
-to the basic REPL when it can't find the standard library, without neededing to
+to the basic REPL when it can't find the standard library, without needing to
 set the ``PYTHON_BASIC_REPL`` environment variable, which most users don't know
 about.
 
@@ -123,20 +123,20 @@ The standard library is composed of three parts:
 
 Built-in modules
     These are native modules, which are directly embedded (statically linked) in
-    the interpreter. As such, they do not exist on their on on the file-system.
+    the interpreter. As such, they do not exist on their on in the file-system.
 
 Extension modules
-    These are native modules, provides as a loadable file (shared/dynamic
-    library). They exist on the "platform-specific standard library directory",
+    These are native modules, provided as a loadable file (shared/dynamic
+    library). They exist in the "platform-specific standard library directory",
     usually referred to as ``platstdlib_dir``.
 
 Pure-Python modules
     These are modules written in Python (``*.py``), being platform-independent.
-    They usually exist on the "platform-independent standard library directory",
+    They usually exist in the "platform-independent standard library directory",
     usually referred to as ``stdlib_dir``, but in certain scenarios, they can
     also exists as ZIP file.
 
-Only the later two exist on the file-system, so only they are in the purview of
+Only the latter two exist on the file-system, so only they are in the purview of
 ``sys.path``. Built-in modules, on the other hand, require a custom non
 path-based importer — ``BuiltinImporter`` — which exists on ``sys.meta_path``.
 
@@ -147,12 +147,12 @@ initialization of the import system, it gets populated with ``BuiltinImporter``,
 ``FrozenImporter``, and ``PathFinder``. We already discussed
 ``BuiltinImporter``, leaving only ``FrozenImporter`` and ``PathImporter``.
 
-``PathImporter`` is fairly straight forward, it regular path-based module
-search, which most users are familiar with, meaning it is responsible for
-searching ``sys.path``. However, is also provides a mechanism where users can
-register hooks to ``sys.path_hooks`` that can produce a finder given a path.
-This is how support for importing pure-Python modules from ZIP files is
-implemented (see zipimport_).
+``PathImporter`` is fairly straightforward, it regular path-based module search,
+which most users are familiar with, meaning it is responsible for searching
+``sys.path``. However, is also provides a mechanism where users can register
+hooks to ``sys.path_hooks`` that can produce a finder given a path. This is
+how support for importing pure-Python modules from ZIP files is implemented
+(see zipimport_).
 
 Per its name, ``FrozenImporter`` is responsible for supporting "frozen modules",
 which is something we have mentioned, but haven't explained yet. In summary,
@@ -164,9 +164,9 @@ also key to be able to bootstrap the import machinery, which is mostly
 implemented in pure-Python as importlib_. They can be disabled via the
 ``-X frozen_modules``/``PYTHON_FROZEN_MODULES`` options.
 
-Coming back to ``getpath``, it needs to locate both the platform specific and
+Coming back to ``getpath``, it needs to locate both the platform-specific and
 independent parts of the standard library. The search logic is incredibly
-complicated, but in a normal scenario it roughly goes as follows:
+complicated, but in a normal scenario, it roughly goes as follows:
 
 1) Find the installation prefixes (``sys.prefix`` and ``sys.exec_prefix``)
     - Manually set via ``PYTHONHOME`` or ``PyConfig.home``
@@ -205,12 +205,12 @@ be set to suppress the warning.
 Reading ``/proc/self/exe`` for a more accurate ``sys.executable``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In addition to above mentioned work on ``getpath``, I looked into the
+In addition to the above-mentioned work on ``getpath``, I looked into the
 possibility of reading the ``/proc/self/exe`` symlink on Linux systems to be
 able to determine the interpreter executable more accurately.
 
 Currently, on POSIX platforms, we either derive ``sys.executable`` from
-``PyConfig.program_name``, or ``argv``. The later can be problematic, as
+``PyConfig.program_name``, or ``argv``. The latter can be problematic, as
 exemplified in https://github.com/python/cpython/issues/124241.
 
 I opened https://github.com/python/cpython/pull/145486 to attempt to solve this
@@ -218,7 +218,7 @@ issue by reading ``/proc/self/exe``. It sets the ``real_executable`` input
 variable of ``getpath`` to the real interpreter path, but contrary to its name,
 it seems we actually rely on being able to set ``real_executable`` to a fake
 path. In fact, macOS, which was already setting ``real_executable`` based on
-``_NSGetExecutablePath``, has a specific workaround to replace it's value with
+``_NSGetExecutablePath``, has a specific workaround to replace its value with
 the value of ``executable``.
 
 .. code:: python
@@ -243,18 +243,18 @@ the value of ``executable``.
 
     ...
 
-The ``getpath`` code is extremely complicated, and fragile, so solving this is
-not trivial. Even after working it for a couple years, it's still difficult to
-understand all quirks and custom behaviors that users downstream are relying on.
-Aggravating this, there is a lot of behavior the tests rely on that is not
-representative of real world use — the tests rely on it to make their
+The ``getpath`` code is extremely complicated and fragile, so solving this is
+not trivial. Even after working on it for a couple years, it's still difficult
+to understand all quirks and custom behaviors that users downstream are relying
+on. Aggravating this, there is a lot of behavior the tests rely on that is not
+representative of real-world use — the tests rely on it to make their
 implementation easier.
 
 There's a lot of technical debt, and we are stuck with a lot of decisions
 resulting of lack of foresight. I am not blaming anyone here, this is just
 extremely old code in a very big project, so this is completely normal.
 
-I spent fairly large amount of time this week looking at this code, and
+I spent a fairly large amount of time this week looking at this code, and
 debugging under a couple different scenarios, in order to better understand what
 it was doing, and which part of it was actually required. This was motivated by
 the issue we are discussing, but it wasn't restricted only to the apparently
