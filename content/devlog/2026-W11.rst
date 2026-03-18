@@ -1,0 +1,54 @@
+.. meta::
+    :title: 2026-W11
+    :date: 2026-03-18T15:52:11.178827
+
+
+This Week
+---------
+
+I didn't feel too well this week, so I wasn't able to do much — I mostly worked
+on ``pkgconf-pypi``.
+
+
+pkgconf-pypi
+++++++++++++
+
+I cleaned up the changes I had started working on last month, and opened
+https://github.com/pypackaging-native/pkgconf-pypi/pull/105.
+
+As discussed previously, it moves the Python integration functionality to a new
+``pkgconf-pypi`` executable. ``pkgconf`` and ``pkg-config`` now provide regular
+``pkgconf`` executables, just without the capacity to search the system,
+requiring the user to define ``PKG_CONFIG_PATH``.
+
+
+CPython
++++++++
+
+My PR freezing the ``encodings`` module
+(https://github.com/python/cpython/pull/145279) was reverted due to a failure on
+Windows.
+
+From a quick look, it might seem like it was just missing freezing the
+``encodings._win_cp_codecs`` submodule, but I doubt that's all. Unless the
+standard library is missing, the import machinery should have been able to
+import the submodule from the file-system.
+
+I need to look into it with more detail, and likely add a couple tests.
+
+The 3.15 feature lock is only two months away, and I really want to get this
+change in, so I need hurry a little bit.
+
+
+Next Week
+---------
+
+Continuing from last week:
+
+* Document the technical aspects of https://github.com/FFY00/dynamic-library
+* Add text to PEP 739 specifying what happens on conflicts
+
+Some other lower priority work I'd like to pick back up the next couple weeks:
+
+* Merge the "freezing ``encodings``" change back into CPython
+* Finish https://github.com/scipy/scipy/pull/24064
