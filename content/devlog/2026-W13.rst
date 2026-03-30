@@ -1,0 +1,101 @@
+.. meta::
+    :title: 2026-W13
+    :date: 2026-03-30T20:59:35.772888
+
+
+This Week
+---------
+
+I didn't feel too well this week, so I wasn't able to do much — I mostly engaged
+in the discussion regarding the request to deprecate and remove support for
+``.pth`` files from Python.
+
+CPython
+*******
+
+This week the ``LiteLLM`` PyPI package `was compromised`_, and a malicious
+version was pushed. The malicious version used a ``.pth`` file as an attack
+amplification vector — since ``.pth`` files are loaded at startup, when ``site``
+is enabled, the package shipped one to automatically trigger the malicious
+payload.
+
+In response to this, we got a request to **completely** deprecate and remove
+support for ``.pth`` files — https://github.com/python/cpython/issues/78125#issuecomment-4119514518
+— which I pushed back.
+
+Removing this functionality would break a lot of downstream code, and wouldn't
+actually really move the needle in terms of security, so I pushed back on the
+proposal.
+
+You can check my full replies in the linked issue, but in a nutshell, the Python
+interpreter relies on the assumption that it is able to trust the file-system.
+If an attacker is able to put a malicious payload on the file-system — eg. by
+installing a malicious package — they can hijack the Python interpreter startup.
+Removing support for ``.pth`` files woudln't prevent this from happening.
+
+To completely prevent malicious packages from hijacking the Python interpreter
+startup, we would need to make a lot of backwards-incompatible changes, so
+that's not really viable either. Even after that, an attacker would still be
+able to trigger the malicious payload execution by hijacking the imports of
+common packages (eg. ``NumPy``, ``requests``, etc.), registering commonly used
+enterypoints, etc. Tackling that would also require a bunch more of
+backwards-incompatible changes, if even possible at all, and after that, you are
+**still** left with malicious code on ``sys.path``, which will trigger whenever
+the user tries to use the compromised/malicious package.
+
+This is to say that you should consider the installation of a malicious package
+as the environment being compromised.
+
+We can consider attack mitigation measures, as long as their tradeoffs make
+sense. In this case, as explained above, the tradeoffs of removing support for
+``.pth`` files are so incredibly massive that they completely outweigh any
+gained benefit.
+
+While discussing this with other folks, the idea of automatically quarantining
+PyPI packages that ship ``.pth`` files came up. This makes much more sense, as
+there are very few use-cases for a package needing to ship a ``.pth`` files.
+However, this can only apply to wheels_, but that shouldn't really be an issue,
+given than installing an sdist_ involves executing package-controlled code
+anyway, so you'd want to be using ``--only-binary`` regardless.
+
+`Quansight Labs`_-funded Work
+*****************************
+
+After looking at my CPython work from the past couple weeks, we agreed to add a
+"CPython UX/Robustness" item to the work scope, which will cover interpreter
+initialization work covered in 2026-W09_ and 2026-W10_.
+
+Additionally, we also agreed it would be nice for me to write a blog post
+covering these 3.15 UX improvements. Ideally, the blog post should be released
+around the time the first 3.15 release candidate.
+
+Other than that, we also re-evaluated the current work scope and priorities.
+
+Next Week
+---------
+
+Next week I'd like to cover the following:
+
+* Merge https://github.com/pypackaging-native/pkgconf-pypi/pull/105 and tag a new release
+* Add text to PEP 739 specifying what happens on conflicts
+* Merge the "freezing ``encodings``" change back into CPython (needs to be done before the 3.15 feature freeze)
+
+Other planned work, for afterwards:
+
+* Implement PEP 739 on Windows (ideally, should be done before the 3.15 feature freeze)
+* Write the 3.15 UX improvements blog post
+* Try reading ``/proc/self/exe`` to determine ``sys.executable`` (https://github.com/python/cpython/pull/145486)
+
+Other lower priority work:
+
+* Document the technical aspects of https://github.com/FFY00/dynamic-library
+* Merge the "freezing ``encodings``" change back into CPython
+* Finish https://github.com/scipy/scipy/pull/24064
+
+
+.. _was compromised: https://awesomeagents.ai/news/litellm-supply-chain-compromise-credential-theft/
+.. _wheels: https://packaging.python.org/en/latest/specifications/binary-distribution-format/
+.. _sdist: https://packaging.python.org/en/latest/specifications/source-distribution-format/
+.. _Quansight Labs: https://labs.quansight.org/
+.. _2026-W09: https://ffy00.github.io/devlog/2026-W09/
+.. _2026-W10: https://ffy00.github.io/devlog/2026-W10/
