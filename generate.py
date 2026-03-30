@@ -406,7 +406,7 @@ def main(cli_args: Sequence[str]) -> None:
             title='Development Log',
             directory=content / 'devlog',
             output_path=pathlib.Path('devlog'),
-            sort_by='ctime',
+            sort_by='id',
             article_template='devlog-article.html',
             content_html_settings={'initial_header_level': 2},
         ),
