@@ -1,0 +1,26 @@
+.. meta::
+    :title: 2026-W12
+    :date: 2026-03-18T16:33:58.473733
+
+
+This Week
+---------
+
+I didn't feel too well this week, so I wasn't able to do much.
+
+* Addressed https://github.com/pypackaging-native/pkgconf-pypi/pull/105 review feedback
+* Reviewed and merged https://github.com/python/cpython/pull/146122
+
+
+Next Week
+---------
+
+Continuing from last week:
+
+* Document the technical aspects of https://github.com/FFY00/dynamic-library
+* Add text to PEP 739 specifying what happens on conflicts
+
+Some other lower priority work I'd like to pick back up the next couple weeks:
+
+* Merge the "freezing ``encodings``" change back into CPython
+* Finish https://github.com/scipy/scipy/pull/24064
